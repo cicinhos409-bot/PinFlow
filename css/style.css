@@ -2711,3 +2711,11 @@ body.modal-open {
 #edit-card .pin-form .dash-card {
   background: var(--bg);
 }
+
+/* Cartão da conta: cabeçalho e números ocupam toda a largura */
+#account-head > .account-head,
+#account-head > .account-stats,
+#account-head > .account-error,
+.account-card > .account-stats {
+  width: 100%;
+}
