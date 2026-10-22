@@ -14,7 +14,7 @@
     api: UI.api,
   };
 
-  var APP_PAGES = { login: 1, cadastro: 1, dashboard: 1, contas: 1, conta: 1, pins: 1, "pin-novo": 1, pin: 1, historico: 1, analises: 1, configuracoes: 1 };
+  var APP_PAGES = { login: 1, cadastro: 1, dashboard: 1, contas: 1, conta: 1, pins: 1, "pin-novo": 1, pin: 1, historico: 1, analises: 1, "analise-pin": 1, configuracoes: 1 };
 
   /* ---------- URLs: /app/<página>/<id da conta>[/<item>] ---------- */
 
@@ -34,7 +34,7 @@
 
   function fixUrl() {
     var p = App.parts();
-    var canonical = { conta: "contas", pin: "pins", "pin-novo": "pins" }[App.page] || App.page;
+    var canonical = { conta: "contas", pin: "pins", "pin-novo": "pins", "analise-pin": "analises" }[App.page] || App.page;
     if (!APP_PAGES[canonical] && canonical !== "contas" && canonical !== "pins") return;
     var wanted = "/app/" + canonical + "/" + encodeURIComponent(App.user.id) + (p.item ? "/" + encodeURIComponent(p.item) : "");
     if (window.location.pathname !== wanted) {

@@ -292,23 +292,71 @@ async function overview(db, user, opts) {
 
 /* ---------- Um pin ---------- */
 
+// Média dos pins publicados da pessoa no mesmo período (só o que já está em cache; não chama a Pinterest).
+async function averageFor(db, user, period, kind, excludePinId) {
+  const rows = await db.findMany("pin_metrics", { user_id: user.id, period, error: null }, { limit: 2000 });
+  const pinIds = rows.map((r) => r.pin_id).filter((id) => id !== excludePinId);
+  if (!pinIds.length) return null;
+  const pins = await db.findMany("pins", { id: { in: pinIds }, user_id: user.id, status: "published", deleted_at: null }, { limit: 2000 });
+  const mediaIds = [...new Set(pins.map((p) => p.media_id).filter(Boolean))];
+  const media = mediaIds.length ? await db.findMany("media", { id: { in: mediaIds } }, { limit: 5000 }) : [];
+  const kindOf = new Map(media.map((m) => [m.id, m.kind]));
+  const wanted = new Set(pins.filter((p) => !kind || (kindOf.get(p.media_id) || "image") === kind).map((p) => p.id));
+  const usable = rows.filter((r) => wanted.has(r.pin_id) && r.summary);
+  if (!usable.length) return null;
+  const sum = { impressions: 0, saves: 0, pin_clicks: 0, outbound_clicks: 0, engagement: 0, video_views: 0 };
+  for (const r of usable) {
+    const s = r.summary;
+    sum.impressions += num(s.IMPRESSION);
+    sum.saves += num(s.SAVE);
+    sum.pin_clicks += num(s.PIN_CLICK);
+    sum.outbound_clicks += num(s.OUTBOUND_CLICK);
+    sum.engagement += num(s.SAVE) + num(s.PIN_CLICK) + num(s.OUTBOUND_CLICK);
+    sum.video_views += num(s.VIDEO_MRC_VIEW);
+  }
+  const n2 = usable.length;
+  return { count: n2, impressions: sum.impressions / n2, saves: sum.saves / n2, pin_clicks: sum.pin_clicks / n2, outbound_clicks: sum.outbound_clicks / n2, engagement: sum.engagement / n2, video_views: sum.video_views / n2 };
+}
+
 async function forPin(db, user, pin, period, opts) {
   const p = validPeriod(period);
   const account = await db.findOne("pinterest_accounts", { id: pin.account_id, user_id: user.id, deleted_at: null });
   const media = pin.media_id ? await db.findOne("media", { id: pin.media_id }) : null;
+  const board = pin.board_id ? await db.findOne("boards", { id: pin.board_id }) : null;
   let row = await db.findOne("pin_metrics", { pin_id: pin.id, period: p });
+  let fetchError = null;
   if (pinterest.isConfigured() && account && account.status === "active" && pin.pinterest_pin_id && (!isFresh(row, Date.now()) || (opts && opts.refresh))) {
     try {
       row = await fetchPinMetrics(db, pin, media, account, p);
     } catch (e) {
-      /* fica com o cache */
+      fetchError = e.message; // fica com o cache
     }
   }
-  const maps = { accounts: new Map(account ? [[account.id, account]] : []), media: new Map(media ? [[media.id, media]] : []), boards: new Map() };
+  const maps = { accounts: new Map(account ? [[account.id, account]] : []), media: new Map(media ? [[media.id, media]] : []), boards: new Map(board ? [[board.id, board]] : []) };
   const out = pinRow(pin, row, maps);
-  out.daily = row && Array.isArray(row.daily) ? row.daily.map((d) => ({ date: d.date, impressions: num((d.metrics || {}).IMPRESSION), saves: num((d.metrics || {}).SAVE), engagement: num((d.metrics || {}).SAVE) + num((d.metrics || {}).PIN_CLICK) + num((d.metrics || {}).OUTBOUND_CLICK), video_views: num((d.metrics || {}).VIDEO_MRC_VIEW) })) : [];
+  const mm = (d) => d.metrics || {};
+  out.daily = row && Array.isArray(row.daily)
+    ? row.daily.map((d) => ({
+        date: d.date,
+        status: d.status,
+        impressions: num(mm(d).IMPRESSION),
+        saves: num(mm(d).SAVE),
+        pin_clicks: num(mm(d).PIN_CLICK),
+        outbound_clicks: num(mm(d).OUTBOUND_CLICK),
+        engagement: num(mm(d).SAVE) + num(mm(d).PIN_CLICK) + num(mm(d).OUTBOUND_CLICK),
+        video_views: num(mm(d).VIDEO_MRC_VIEW),
+        video_starts: num(mm(d).VIDEO_START),
+      }))
+    : [];
   out.period = p;
   out.range = dateRange(p);
+  out.description = pin.description || "";
+  out.link = pin.link || "";
+  out.cover = pin.cover_media_id ? await db.findOne("media", { id: pin.cover_media_id }).then((c) => (c ? { url: c.url } : null)) : null;
+  out.account_status = account ? account.status : null;
+  out.fetch_error = fetchError;
+  out.pinterest_configured = pinterest.isConfigured();
+  out.average = await averageFor(db, user, p, out.kind, pin.id);
   return out;
 }
 
@@ -334,4 +382,4 @@ async function refreshRecent(db, budget) {
   return done;
 }
 
-module.exports = { overview, forPin, refreshRecent, dateRange, validPeriod, STANDARD_METRICS, VIDEO_METRICS, ACCOUNT_METRICS };
+module.exports = { overview, forPin, averageFor, refreshRecent, dateRange, validPeriod, STANDARD_METRICS, VIDEO_METRICS, ACCOUNT_METRICS };

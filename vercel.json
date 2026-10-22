@@ -25,6 +25,7 @@
     { "source": "/app/pins/:id/:pin", "destination": "/app/pin" },
     { "source": "/app/pins/:id", "destination": "/app/pins" },
     { "source": "/app/historico/:id", "destination": "/app/historico" },
+    { "source": "/app/analises/:id/:pin", "destination": "/app/analise-pin" },
     { "source": "/app/analises/:id", "destination": "/app/analises" },
     { "source": "/app/configuracoes/:id", "destination": "/app/configuracoes" },
     { "source": "/app/configura%C3%A7%C3%B5es", "destination": "/app/configuracoes" },

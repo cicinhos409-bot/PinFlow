@@ -510,7 +510,7 @@ pages["app/analises.html"] = appShell({
   heading: "Análises",
   intro: "Impressões, salvamentos, cliques e visualizações dos pins que você publicou pela plataforma. Só você vê os seus.",
   actions: '<button class="btn btn-ghost" type="button" id="refresh-btn">Atualizar dados</button>',
-  scripts: ["pages/analises"],
+  scripts: ["pages/chart", "pages/analises"],
   body: `
       <div class="toolbar">
         <div class="chips" role="group" aria-label="Período">
@@ -554,6 +554,53 @@ pages["app/analises.html"] = appShell({
         </section>
 
         <section class="dash-card dash-card-wide" id="table-card" aria-label="Todos os pins"></section>
+      </div>`,
+});
+
+pages["app/analise-pin.html"] = appShell({
+  page: "analise-pin",
+  current: "analises",
+  title: "Análise do pin",
+  eyebrow: '<a href="/app/analises" data-app-link="analises">← Análises</a>',
+  heading: "Análise do pin",
+  intro: "",
+  scripts: ["pages/chart", "pages/analise-pin"],
+  body: `
+      <section class="dash-card pin-detail" id="pin-head" aria-label="Pin"></section>
+
+      <div id="content">
+        <div class="toolbar" style="margin-top:20px">
+          <div class="chips" role="group" aria-label="Período">
+            <button type="button" class="chip" data-days="7" aria-pressed="false">7 dias</button>
+            <button type="button" class="chip" data-days="14" aria-pressed="false">14 dias</button>
+            <button type="button" class="chip" data-days="30" aria-pressed="true">30 dias</button>
+            <button type="button" class="chip" data-days="90" aria-pressed="false">90 dias</button>
+          </div>
+        </div>
+        <p class="hint" id="updated-at"></p>
+        <p class="notice is-warn" id="pin-notice" hidden></p>
+
+        <section class="stats" id="stats" aria-label="Métricas do período"></section>
+        <p class="hint" id="avg-note" style="margin-top:8px"></p>
+
+        <div class="dash-grid dash-grid-main">
+          <section class="dash-card dash-card-wide" id="video-card" aria-labelledby="video-titulo" hidden>
+            <h2 id="video-titulo">Vídeo</h2>
+            <section class="stats stats-compact" id="video-stats" aria-label="Métricas do vídeo"></section>
+            <h3 class="sub-title">Funil de audiência</h3>
+            <div id="funnel" class="funnel card-body"></div>
+          </section>
+
+          <section class="dash-card dash-card-wide" aria-labelledby="grafico-titulo">
+            <h2 id="grafico-titulo">Por dia</h2>
+            <div id="chart" class="chart card-body"></div>
+          </section>
+
+          <section class="dash-card dash-card-wide" id="chart-video-card" aria-labelledby="grafico-video-titulo" hidden>
+            <h2 id="grafico-video-titulo">Visualizações por dia</h2>
+            <div id="chart-video" class="chart card-body"></div>
+          </section>
+        </div>
       </div>`,
 });
 

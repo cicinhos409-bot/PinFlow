@@ -46,6 +46,7 @@ Regra que vale para todas: nada de dado falso. Se não há informação, a tela 
 | 16 | Configurações | `/app/configuracoes/<id>` | 1 ✅ |
 | 17 | Biblioteca de mídia | dentro do seletor de mídia do pin | 2 ✅ (parcial) |
 | 18 | Análises | `/app/analises/<id>` | 2 ✅ |
+| 18b | Análise de um pin/vídeo | `/app/analises/<id>/<pin>` | 2 ✅ |
 | 19 | Plano e cobrança | `/app/plano/<id>` | 2 |
 | 20 | Equipe | `/app/equipe/<id>` | 3 |
 
@@ -68,6 +69,8 @@ Regra que vale para todas: nada de dado falso. Se não há informação, a tela 
 **17. Biblioteca de mídia.** Imagens e vídeos já enviados, para reutilizar em outros pins e contas sem subir de novo. Existe porque quem gerencia várias contas repete muita mídia; economiza tempo e armazenamento.
 
 **18. Análises.** Por pin e por conta: impressões, salvamentos, cliques no pin e no link, visualizações e tempo assistido dos vídeos, gráfico por dia, ranking e tabela ordenável. Vêm da API de analytics da Pinterest (contas Business), com cache de 6 h para respeitar o limite de chamadas. Cada pessoa vê só os pins que publicou. Existe para mostrar resultado e justificar a assinatura.
+
+**18b. Análise de um pin/vídeo.** Todas as métricas daquele pin no período escolhido, comparação com a média dos outros pins da pessoa (do mesmo tipo), gráfico diário só dele e, para vídeo, o funil (impressões → play → views → 10 s → até o fim), tempo médio e total. Acessível pelo detalhe do pin, pela tabela de Análises e pelo menu da lista de pins. Existe para a pessoa entender por que um pin foi bem ou mal e repetir o que funciona.
 
 **19. Plano e cobrança.** Plano atual, limites usados (contas, pins/mês), trocar plano, faturas, cartão. Existe para a plataforma virar negócio.
 

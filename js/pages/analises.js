@@ -55,66 +55,7 @@
     /* ---------- Gráfico (SVG) ---------- */
 
     function renderChart(d) {
-      var wrap = el("chart");
-      wrap.innerHTML = "";
-      var days = d.daily;
-      if (!days.length || !days.some(function (x) { return x.impressions > 0 || x.engagement > 0; })) {
-        wrap.appendChild(UI.el("p", { class: "hint", text: "Sem dados diários ainda. A Pinterest leva de 1 a 2 dias para consolidar os números." }));
-        return;
-      }
-      var W = 720;
-      var H = 220;
-      var padL = 44;
-      var padR = 12;
-      var padT = 14;
-      var padB = 30;
-      var maxImp = Math.max.apply(null, days.map(function (x) { return x.impressions; }).concat([1]));
-      var maxEng = Math.max.apply(null, days.map(function (x) { return x.engagement; }).concat([1]));
-      var innerW = W - padL - padR;
-      var innerH = H - padT - padB;
-      var step = innerW / days.length;
-      var svgNS = "http://www.w3.org/2000/svg";
-      var svg = document.createElementNS(svgNS, "svg");
-      svg.setAttribute("viewBox", "0 0 " + W + " " + H);
-      svg.setAttribute("class", "chart-svg");
-      svg.setAttribute("role", "img");
-      svg.setAttribute("aria-label", "Impressões por dia (barras) e engajamento (linha)");
-      function node(tag, attrs, text) {
-        var e = document.createElementNS(svgNS, tag);
-        Object.keys(attrs).forEach(function (k) { e.setAttribute(k, attrs[k]); });
-        if (text !== undefined) e.textContent = text;
-        return e;
-      }
-      // Linhas de grade e rótulos do eixo Y (impressões)
-      for (var g = 0; g <= 3; g++) {
-        var y = padT + innerH - (innerH * g) / 3;
-        svg.appendChild(node("line", { x1: padL, x2: W - padR, y1: y, y2: y, class: "chart-grid" }));
-        svg.appendChild(node("text", { x: padL - 6, y: y + 4, class: "chart-axis", "text-anchor": "end" }, n((maxImp * g) / 3)));
-      }
-      // Barras
-      days.forEach(function (x, i) {
-        var h = (x.impressions / maxImp) * innerH;
-        var bx = padL + i * step + step * 0.15;
-        var bw = Math.max(2, step * 0.7);
-        var rect = node("rect", { x: bx, y: padT + innerH - h, width: bw, height: h, rx: Math.min(3, bw / 2), class: "chart-bar" });
-        rect.appendChild(node("title", {}, UI.formatDate(x.date + "T12:00:00Z") + ": " + n(x.impressions) + " impressões · " + n(x.engagement) + " engajamento"));
-        svg.appendChild(rect);
-      });
-      // Linha de engajamento (escala própria)
-      var points = days.map(function (x, i) {
-        return padL + i * step + step / 2 + "," + (padT + innerH - (x.engagement / maxEng) * innerH);
-      });
-      svg.appendChild(node("polyline", { points: points.join(" "), class: "chart-line" }));
-      // Rótulos do eixo X (até ~8)
-      var every = Math.max(1, Math.ceil(days.length / 8));
-      days.forEach(function (x, i) {
-        var isLast = i === days.length - 1;
-        if (i % every !== 0 && !isLast) return;
-        if (isLast && i % every !== 0 && i % every < every / 2) return; // perto demais do rótulo anterior
-        svg.appendChild(node("text", { x: padL + i * step + step / 2, y: H - 8, class: "chart-axis", "text-anchor": "middle" }, x.date.slice(8, 10) + "/" + x.date.slice(5, 7)));
-      });
-      wrap.appendChild(svg);
-      wrap.appendChild(UI.el("p", { class: "chart-legend" }, [UI.el("span", { class: "legend-bar" }), "Impressões ", UI.el("span", { class: "legend-line" }), "Engajamento (salvamentos + cliques)"]));
+      Chart.daily(el("chart"), d.daily, { bar: "impressions", line: "engagement" });
     }
 
     /* ---------- Contas ---------- */
@@ -146,7 +87,7 @@
     /* ---------- Ranking ---------- */
 
     function pinLine(p, valueText) {
-      return UI.el("li", {}, UI.el("a", { href: App.url("pins", p.id), class: "pin-row" }, [
+      return UI.el("li", {}, UI.el("a", { href: App.url("analises", p.id), class: "pin-row" }, [
         App.thumb(p.media),
         UI.el("div", { class: "pin-row-text" }, [UI.el("strong", { text: p.title || "(sem título)" }), UI.el("span", { text: (p.account ? "@" + p.account.username : "") + " · " + UI.formatDate(p.published_at) })]),
         UI.el("div", { class: "pin-row-when" }, [UI.el("strong", { text: valueText })]),
@@ -232,7 +173,7 @@
       pins.forEach(function (p) {
         var m = p.metrics;
         var cells = [
-          UI.el("td", { class: "td-pin" }, UI.el("a", { href: App.url("pins", p.id), class: "pin-cell" }, [
+          UI.el("td", { class: "td-pin" }, UI.el("a", { href: App.url("analises", p.id), class: "pin-cell", title: "Ver análise completa" }, [
             App.thumb(p.media),
             UI.el("div", { class: "pin-row-text" }, [
               UI.el("strong", { text: p.title || "(sem título)" }),

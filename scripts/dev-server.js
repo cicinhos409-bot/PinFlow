@@ -50,6 +50,7 @@ const APP_PAGES = [
   [/^\/app\/pins\/[^/]+\/[^/]+$/, () => "pin"],
   [/^\/app\/pins(?:\/[^/]+)?$/, () => "pins"],
   [/^\/app\/historico(?:\/[^/]+)?$/, () => "historico"],
+  [/^\/app\/analises\/[^/]+\/[^/]+$/, () => "analise-pin"],
   [/^\/app\/analises(?:\/[^/]+)?$/, () => "analises"],
   [/^\/app\/(configuracoes|configurações)(?:\/[^/]+)?$/, () => "configuracoes"],
 ];

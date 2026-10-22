@@ -41,7 +41,7 @@ Padrão `/app/<página>/<id da conta>[/<item>]`. O id é público, aleatório e 
 | Contas / Conta | `/app/contas/<id>`, `/app/contas/<id>/<conta>` |
 | Pins / Novo / Detalhe | `/app/pins/<id>`, `/app/pins/<id>/novo`, `/app/pins/<id>/<pin>` |
 | Histórico | `/app/historico/<id>` |
-| Análises | `/app/analises/<id>` |
+| Análises / Análise de um pin | `/app/analises/<id>`, `/app/analises/<id>/<pin>` |
 | Configurações | `/app/configuracoes/<id>` |
 
 ## API (JSON, mesma origem, sessão por cookie)
@@ -60,7 +60,7 @@ Padrão `/app/<página>/<id da conta>[/<item>]`. O id é público, aleatório e 
 | `POST /api/media/upload` (token) · `POST /api/media` · `GET /api/media` · `DELETE /api/media/:id` | Mídia |
 | `GET/POST /api/pins` · `GET/PATCH/DELETE /api/pins/:id` · `POST /api/pins/:id/{cancel,retry,publish-now,duplicate}` | Pins |
 | `GET /api/dashboard` · `GET /api/activity` | Resumo e histórico |
-| `GET /api/analytics?days=&account=` · `POST /api/analytics/refresh` · `GET /api/analytics/pin/:id` | Análises (métricas da Pinterest com cache de 6 h e orçamento de chamadas) |
+| `GET /api/analytics?days=&account=` · `POST /api/analytics/refresh` · `GET /api/analytics/pin/:id` · `POST /api/analytics/pin/:id/refresh` | Análises (métricas da Pinterest com cache de 6 h e orçamento de chamadas; por pin, com média dos outros pins e espera de 10 min para atualizar) |
 | `POST /api/worker/run` | Processa a fila (público, limitado; só publica o que já venceu) |
 | `GET /api/cron/daily` · `GET /api/cron/queue` | Cron com `CRON_SECRET` |
 

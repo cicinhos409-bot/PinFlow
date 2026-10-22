@@ -177,6 +177,7 @@
         var note = r.data.pending ? "Ainda sem dados da Pinterest." : r.data.error ? r.data.error : r.data.fetched_at ? "Dados de " + UI.formatRelative(r.data.fetched_at) + "." : "";
         if (r.data.data_status === "PROCESSING") note += " A Pinterest ainda está processando os últimos dias.";
         if (note) wrap.appendChild(UI.el("p", { class: "hint", text: note }));
+        wrap.appendChild(UI.el("a", { class: "btn btn-small btn-primary", href: App.url("analises", p.id), text: "Ver análise completa deste " + (r.data.kind === "video" ? "vídeo" : "pin") }));
       });
     }
 

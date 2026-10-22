@@ -2858,3 +2858,48 @@ body.modal-open {
 .metrics-table tbody tr:hover {
   background: var(--surface-2);
 }
+
+/* ---------- Análise de um pin ---------- */
+
+.pin-preview.small {
+  max-width: 220px;
+}
+.funnel {
+  display: grid;
+  gap: 8px;
+}
+.funnel-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 70px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+.funnel-label {
+  color: var(--text-soft);
+}
+.funnel-bar {
+  height: 14px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.funnel-bar i {
+  display: block;
+  height: 100%;
+  background: var(--amber-grad);
+  border-radius: 999px;
+}
+.funnel-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.chart-bar.is-partial {
+  fill: rgba(254, 154, 0, 0.25);
+}
+@media (min-width: 720px) {
+  .pin-detail:has(.pin-preview.small) {
+    grid-template-columns: 220px 1fr;
+  }
+}

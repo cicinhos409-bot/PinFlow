@@ -271,6 +271,13 @@ async function main() {
   check("conta de outro usuário/inexistente -> 404", r.status === 404);
   r = await call("GET", "/api/analytics/pin/" + pinV + "?days=30", { cookie });
   check("métricas de um pin de vídeo", r.status === 200 && r.data.available === true && r.data.kind === "video" && r.data.daily.length === 30);
+  check("análise do pin traz média dos outros pins e dados extras", r.data.average === null || typeof r.data.average.impressions === "number");
+  r = await call("GET", "/api/analytics/pin/" + pinA + "?days=30", { cookie });
+  check("pin de imagem compara com a média dos outros pins de imagem", r.status === 200 && r.data.kind === "image" && r.data.average && r.data.average.count === 1 && r.data.board && r.data.board.name);
+  r = await call("POST", "/api/analytics/pin/" + pinA + "/refresh", { body: { days: 30 }, cookie });
+  check("atualizar um pin", r.status === 200 && r.data.available === true);
+  r = await call("POST", "/api/analytics/pin/" + pinA + "/refresh", { body: { days: 30 }, cookie });
+  check("atualizar o mesmo pin logo depois -> espera (429)", r.status === 429 && r.data.error.code === "cooldown");
   r = await call("GET", "/api/analytics/pin/" + pinLimit + "?days=30", { cookie });
   check("pin não publicado -> sem métricas, com explicação", r.status === 200 && r.data.available === false);
   r = await call("POST", "/api/analytics/refresh", { body: { days: 30 }, cookie });

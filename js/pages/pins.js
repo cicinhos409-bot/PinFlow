@@ -34,6 +34,7 @@
       if (p.status === "scheduled") items.push({ label: "Cancelar", onClick: function () { cancel(p, reload); } });
       if (p.status === "failed" || p.status === "canceled") items.push({ label: "Tentar de novo", onClick: function () { act(p, "retry", "Pin de volta na fila.", reload); } });
       items.push({ label: "Duplicar", onClick: function () { duplicate(p, reload); } });
+      if (p.status === "published") items.push({ label: "Ver análise", onClick: function () { window.location.href = App.url("analises", p.id); } });
       if (p.pinterest_url) items.push({ label: "Ver na Pinterest", onClick: function () { window.open(p.pinterest_url, "_blank", "noopener"); } });
       items.push({ separator: true });
       items.push({ label: "Apagar", danger: true, onClick: function () { remove(p, reload); } });
