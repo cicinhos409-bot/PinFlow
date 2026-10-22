@@ -12,12 +12,9 @@ Alternativa: Supabase ou Railway também servem; copie a connection string (com 
 
 **Resultado:** o modo de visualização desliga, o cadastro e o login passam a funcionar e você cria sua conta em `/app/cadastro`.
 
-## 2. Armazenamento de imagens e vídeos — Vercel Blob
+## 2. Armazenamento de imagens e vídeos — Vercel Blob ✅ já feito
 
-1. Vercel → projeto → **Storage** → **Create Database/Store** → **Blob** → conecte ao projeto.
-2. A variável `BLOB_READ_WRITE_TOKEN` é criada sozinha. Redeploy.
-
-**Resultado:** o botão "Imagem ou vídeo" no Novo pin envia arquivos direto do navegador para o armazenamento.
+A loja **pinflow-midia** (Vercel Blob, pública, região iad1) já foi criada e conectada ao projeto; a variável `BLOB_READ_WRITE_TOKEN` já existe e `/api/status` responde `"storage": "blob"`. Nada a fazer. (Plano Hobby: 1 GB grátis; apague mídias antigas pela biblioteca se precisar.)
 
 ## 3. App na Pinterest
 
@@ -44,7 +41,7 @@ A fila roda quando alguém está com a plataforma aberta (a cada 60 s) e uma vez
 
 ## Variáveis já configuradas na Vercel
 
-`SESSION_SECRET`, `TOKEN_ENCRYPTION_KEY`, `CRON_SECRET` e `APP_URL` já foram definidas (produção). Se um dia trocar `TOKEN_ENCRYPTION_KEY`, todas as contas da Pinterest precisarão ser reconectadas.
+`SESSION_SECRET`, `TOKEN_ENCRYPTION_KEY`, `CRON_SECRET` e `APP_URL` já foram definidas (produção e preview), como variáveis **sensíveis** (a Vercel não mostra o valor depois). Se um dia trocar `TOKEN_ENCRYPTION_KEY`, todas as contas da Pinterest precisarão ser reconectadas. Para usar um agendador externo (item 5), defina um valor seu em `CRON_SECRET` (Settings → Environment Variables → editar) e use o mesmo valor no agendador.
 
 ## Checklist final antes de abrir ao público
 
