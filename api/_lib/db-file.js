@@ -65,6 +65,21 @@ module.exports = {
       return user;
     }, true),
 
+  updateUser: (id, fields, iso) =>
+    run((d) => {
+      const u = d.users.find((x) => x.id === id);
+      if (!u) return null;
+      Object.assign(u, fields, { updated_at: iso });
+      return u;
+    }, true),
+
+  revokeOtherSessions: (userId, keepSessionId, iso) =>
+    run((d) => {
+      for (const s of d.sessions) {
+        if (s.user_id === userId && s.id !== keepSessionId && !s.revoked_at) s.revoked_at = iso;
+      }
+    }, true),
+
   touchLogin: (id, iso) =>
     run((d) => {
       const u = d.users.find((x) => x.id === id);

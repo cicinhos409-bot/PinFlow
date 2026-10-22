@@ -62,6 +62,16 @@ function randomId() {
   return crypto.randomUUID();
 }
 
+// Id curto e aleatório que aparece nas URLs (/app/dashboard/<id>). Não é sequencial:
+// ninguém consegue "adivinhar" o id de outra conta mudando um número.
+const PUBLIC_ID_ALPHABET = "abcdefghijkmnpqrstuvwxyz23456789"; // sem l, o, 0, 1 (parecidos)
+function publicId(length = 12) {
+  const bytes = crypto.randomBytes(length);
+  let out = "";
+  for (let i = 0; i < length; i++) out += PUBLIC_ID_ALPHABET[bytes[i] % PUBLIC_ID_ALPHABET.length];
+  return out;
+}
+
 function sha256(value) {
   return crypto.createHash("sha256").update(String(value)).digest("hex");
 }
@@ -70,4 +80,4 @@ function hmac(secret, value) {
   return crypto.createHmac("sha256", secret).update(String(value)).digest("hex");
 }
 
-module.exports = { hashPassword, verifyPassword, dummyHash, randomToken, randomId, sha256, hmac };
+module.exports = { hashPassword, verifyPassword, dummyHash, randomToken, randomId, publicId, sha256, hmac };

@@ -21,7 +21,8 @@ function ipHash(req) {
 }
 
 function publicUser(user) {
-  return { id: user.id, email: user.email, name: user.name || "" };
+  // "id" aqui é o id público (o das URLs). O id interno nunca sai do servidor.
+  return { id: user.public_id, email: user.email, name: user.name || "" };
 }
 
 async function startSession(db, req, res, user) {

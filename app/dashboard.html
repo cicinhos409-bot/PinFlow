@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Painel</title>
+  <title>Dashboard</title>
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#000000">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -12,10 +12,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;700;800;900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body data-page="painel">
-  <header class="site-header is-scrolled">
+<body data-page="dashboard" data-app="1">
+  <header class="site-header is-scrolled app-header">
     <div class="container nav">
-      <a class="logo" href="/painel" aria-label="Painel">
+      <a class="logo" href="/app/dashboard" aria-label="Dashboard">
         <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
           <rect width="32" height="32" rx="9" fill="#fe9a00"/>
           <path d="M9 22V10h7a4.5 4.5 0 0 1 0 9h-3.5" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -23,25 +23,37 @@
         </svg>
         <span data-brand>Pinflow</span>
       </a>
-      <button class="btn btn-ghost btn-small" type="button" id="logout">Sair</button>
+      <nav class="app-nav" aria-label="Menu da plataforma">
+        <a href="/app/dashboard" data-app-link="dashboard" aria-current="page">Dashboard</a>
+        <a href="/app/contas" data-app-link="contas">Contas</a>
+        <a href="/app/configuracoes" data-app-link="configuracoes">Configurações</a>
+        <button class="btn btn-ghost btn-small" type="button" id="logout">Sair</button>
+      </nav>
     </div>
   </header>
 
-  <main class="dash" id="dash" hidden>
+  <main class="dash" id="app-main" hidden>
     <div class="container">
+      <p class="eyebrow">Dashboard</p>
       <h1>Olá, <span data-user-name></span></h1>
       <p class="section-intro">Você entrou com <strong data-user-email></strong>.</p>
 
-      <section class="dash-card" aria-labelledby="contas-titulo">
-        <h2 id="contas-titulo">Contas do Pinterest</h2>
-        <p>Nenhuma conta conectada ainda.</p>
-        <button class="btn btn-primary" type="button" disabled>Conectar conta do Pinterest</button>
-        <p class="hint">A conexão pelo login oficial do Pinterest é a próxima etapa da plataforma.</p>
-      </section>
+      <div class="dash-grid">
+        <section class="dash-card" aria-labelledby="contas-titulo">
+          <h2 id="contas-titulo">Contas do Pinterest</h2>
+          <p>Nenhuma conta conectada ainda.</p>
+          <a class="btn btn-primary" href="/app/contas" data-app-link="contas">Gerenciar contas</a>
+        </section>
+
+        <section class="dash-card" aria-labelledby="pins-titulo">
+          <h2 id="pins-titulo">Pins programados</h2>
+          <p>Nenhum pin na fila. Conecte uma conta do Pinterest para começar a programar.</p>
+        </section>
+      </div>
     </div>
   </main>
 
-  <p class="dash-loading container" id="dash-loading" role="status">Carregando…</p>
+  <p class="dash-loading container" id="app-loading" role="status">Carregando…</p>
 
   <script src="/js/config.js"></script>
   <script src="/js/main.js"></script>

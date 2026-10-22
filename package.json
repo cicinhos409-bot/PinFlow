@@ -7,6 +7,6 @@
     "dev": "vercel dev",
     "dev:local": "node scripts/dev-server.js",
     "test:auth": "node scripts/test-auth.js",
-    "check": "node --check js/config.js && node --check js/main.js && node --check js/auth.js && node --check scripts/dev-server.js && node --check scripts/test-auth.js"
+    "check": "for f in api/_lib/*.js api/auth/*.js; do node --check $f || exit 1; done && node --check js/config.js && node --check js/main.js && node --check js/auth.js && node --check scripts/dev-server.js && node --check scripts/test-auth.js"
   }
 }

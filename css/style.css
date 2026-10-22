@@ -1167,3 +1167,82 @@ p {
     padding: 40px 36px;
   }
 }
+
+/* ---------- Plataforma (/app) ---------- */
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.app-nav a {
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--text-soft);
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+.app-nav a:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+.app-nav a[aria-current="page"] {
+  color: var(--amber);
+}
+.app-nav .btn {
+  margin-left: 8px;
+}
+.eyebrow {
+  color: var(--amber);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.dash-grid {
+  display: grid;
+  gap: 20px;
+  margin-top: 36px;
+}
+.dash-grid .dash-card {
+  margin-top: 0;
+  max-width: none;
+}
+.dash-card .form {
+  width: 100%;
+  margin-top: 4px;
+}
+.dash-card .form .btn {
+  justify-self: start;
+}
+.field input[readonly] {
+  color: var(--text-soft);
+  background: var(--surface-2);
+}
+
+@media (max-width: 719px) {
+  .app-header .nav {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .app-nav {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .app-nav a {
+    padding: 8px 6px;
+    font-size: 0.9rem;
+  }
+  .app-nav .btn {
+    margin-left: auto;
+  }
+}
+@media (min-width: 900px) {
+  .dash-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

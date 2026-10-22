@@ -11,6 +11,8 @@
  *   findUserByEmail(email)            -> usuário ou null
  *   findUserById(id)                  -> usuário ou null
  *   createUser(user)                  -> usuário (lança erro com code "EMAIL_TAKEN" se o e-mail já existir)
+ *   updateUser(userId, fields, isoDate) -> altera campos do usuário (nome, senha...)
+ *   revokeOtherSessions(userId, keepSessionId, isoDate) -> encerra as outras sessões (troca de senha)
  *   touchLogin(userId, isoDate)       -> grava o último login
  *   createSession(session)            -> grava a sessão (só o HASH do token)
  *   findSessionByTokenHash(hash)      -> sessão ou null

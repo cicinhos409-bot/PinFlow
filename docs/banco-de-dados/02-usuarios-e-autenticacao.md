@@ -67,3 +67,6 @@ Mesma estrutura de `email_verifications`, com `expires_at` ainda mais curto e us
 
 ## Tentativas de login e cadastro (limite de abuso)
 Tabela `auth_attempts`: `id`, `kind` (login|register), `email_key` (e-mail normalizado, nulo no cadastro), `ip_hash` (HMAC, nunca o IP puro), `success` (bool), `created_at`. Índices em (`kind`, `email_key`, `ip_hash`, `created_at`). Apagar linhas com mais de 24 h.
+
+## Id público (URLs)
+Coluna `public_id` em `users`: texto de 12 caracteres, aleatório, único (índice único). É o id que aparece em `/app/dashboard/<id>`. O `id` interno (UUID) nunca sai do servidor.

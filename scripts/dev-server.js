@@ -31,12 +31,20 @@ const API = {
   "/api/auth/login": "../api/auth/login.js",
   "/api/auth/logout": "../api/auth/logout.js",
   "/api/auth/me": "../api/auth/me.js",
+  "/api/auth/profile": "../api/auth/profile.js",
+  "/api/auth/password": "../api/auth/password.js",
 };
+
+// Mesmas regras do vercel.json (redirects): endereços antigos -> novos.
+const REDIRECTS = { "/entrar": "/app/login", "/cadastro": "/app/cadastro", "/painel": "/app/dashboard", "/app": "/app/dashboard" };
 
 function staticFileFor(pathname) {
   if (pathname === "/") return path.join(ROOT, "index.html");
   if (pathname === "/favicon.svg") return path.join(ROOT, "favicon.svg");
   if (/^\/(css|js)\/[A-Za-z0-9._-]+$/.test(pathname)) return path.join(ROOT, pathname);
+  // Plataforma: /app/<página> ou /app/<página>/<id>  (o id é ignorado aqui; o JS da página lê a URL)
+  const app = /^\/app\/(login|cadastro|dashboard|contas|configuracoes|configurações)(?:\/[^/]+)?$/.exec(pathname);
+  if (app) return path.join(ROOT, "app", (app[1] === "configurações" ? "configuracoes" : app[1]) + ".html");
   if (/^\/[a-z-]+$/.test(pathname)) return path.join(ROOT, pathname.slice(1) + ".html"); // URLs sem .html
   return null;
 }
@@ -59,6 +67,12 @@ function createServer() {
         return res.end(JSON.stringify({ ok: false, error: { code: "not_found", message: "Não encontrado." } }));
       }
       return require(file)(req, res);
+    }
+
+    if (REDIRECTS[pathname]) {
+      res.statusCode = 302;
+      res.setHeader("Location", REDIRECTS[pathname]);
+      return res.end();
     }
 
     const file = staticFileFor(pathname);

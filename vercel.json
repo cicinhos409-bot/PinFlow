@@ -1,6 +1,20 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/entrar", "destination": "/app/login", "permanent": true },
+    { "source": "/cadastro", "destination": "/app/cadastro", "permanent": true },
+    { "source": "/painel", "destination": "/app/dashboard", "permanent": true },
+    { "source": "/app", "destination": "/app/dashboard", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/app/login/:id", "destination": "/app/login" },
+    { "source": "/app/dashboard/:id", "destination": "/app/dashboard" },
+    { "source": "/app/contas/:id", "destination": "/app/contas" },
+    { "source": "/app/configuracoes/:id", "destination": "/app/configuracoes" },
+    { "source": "/app/configurações", "destination": "/app/configuracoes" },
+    { "source": "/app/configurações/:id", "destination": "/app/configuracoes" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -9,6 +23,13 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    },
+    {
+      "source": "/app/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
     },
     {

@@ -143,6 +143,42 @@ async function main() {
 
   r = await call("GET", "/api/auth/me", { cookie: cookieB });
   check("sessão nova funciona", r.status === 200);
+  const publicId = r.data.user.id;
+  check("id público curto para a URL (12 caracteres, sem UUID)", /^[a-z2-9]{12}$/.test(publicId));
+
+  console.log("\nPerfil e troca de senha");
+  r = await call("PATCH", "/api/auth/profile", { body: { name: "Maria  Teste" } });
+  check("alterar nome sem sessão -> 401", r.status === 401);
+  r = await call("PATCH", "/api/auth/profile", { body: { name: "Maria Teste" }, cookie: cookieB });
+  check("alterar nome -> 200 e devolve o nome novo", r.status === 200 && r.data.user.name === "Maria Teste" && r.data.user.id === publicId);
+
+  r = await call("POST", "/api/auth/login", { body: { email: "teste@exemplo.com", password: GOOD_PASSWORD } });
+  const cookieOther = r.cookie; // "outro aparelho"
+  const NEW_PASSWORD = "outra frase longa e nova 2027";
+  r = await call("POST", "/api/auth/password", { body: { currentPassword: "errada de proposito", newPassword: NEW_PASSWORD }, cookie: cookieB });
+  check("trocar senha com a atual errada -> 403", r.status === 403 && r.data.error.field === "currentPassword");
+  r = await call("POST", "/api/auth/password", { body: { currentPassword: GOOD_PASSWORD, newPassword: "123456" }, cookie: cookieB });
+  check("nova senha fraca -> 422", r.status === 422 && r.data.error.field === "newPassword");
+  r = await call("POST", "/api/auth/password", { body: { currentPassword: GOOD_PASSWORD, newPassword: NEW_PASSWORD }, cookie: cookieB });
+  check("trocar senha -> 200", r.status === 200);
+  r = await call("GET", "/api/auth/me", { cookie: cookieOther });
+  check("o outro aparelho foi desconectado", r.status === 401);
+  r = await call("GET", "/api/auth/me", { cookie: cookieB });
+  check("o aparelho que trocou continua conectado", r.status === 200);
+  r = await call("POST", "/api/auth/login", { body: { email: "teste@exemplo.com", password: GOOD_PASSWORD } });
+  check("senha antiga não entra mais", r.status === 401);
+  r = await call("POST", "/api/auth/login", { body: { email: "teste@exemplo.com", password: NEW_PASSWORD } });
+  check("senha nova entra", r.status === 200);
+
+  console.log("\nEndereços da plataforma");
+  r = await call("GET", "/app/dashboard/" + publicId);
+  check("/app/dashboard/<id> abre a página", r.status === 200 && r.text.indexOf('data-page="dashboard"') !== -1);
+  r = await call("GET", "/app/configurações/" + publicId);
+  check("/app/configurações/<id> (com acento) abre a página", r.status === 200 && r.text.indexOf('data-page="configuracoes"') !== -1);
+  r = await call("GET", "/app/login/" + publicId);
+  check("/app/login/<id> abre o login", r.status === 200 && r.text.indexOf('data-page="login"') !== -1);
+  r = await fetch(base + "/entrar", { redirect: "manual" });
+  check("/entrar redireciona para /app/login", r.status === 302 && r.headers.get("location") === "/app/login");
 
   console.log("\nBloqueio por tentativas erradas");
   r = await call("POST", "/api/auth/register", { body: newUser("bloqueio@exemplo.com") });

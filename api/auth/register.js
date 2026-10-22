@@ -3,7 +3,7 @@
 const config = require("../_lib/config");
 const { getDb } = require("../_lib/db");
 const { route, send, fail } = require("../_lib/http");
-const { hashPassword, randomId } = require("../_lib/crypto");
+const { hashPassword, randomId, publicId } = require("../_lib/crypto");
 const { normalizeEmail, validEmail, validatePassword, cleanName } = require("../_lib/validate");
 const { ipHash, publicUser, startSession } = require("../_lib/auth");
 
@@ -43,6 +43,7 @@ module.exports = route(["POST"], async ({ req, res, body }) => {
   try {
     user = await db.createUser({
       id: randomId(),
+      public_id: publicId(),
       email,
       password_hash: await hashPassword(password),
       name: cleanName(body.name),
