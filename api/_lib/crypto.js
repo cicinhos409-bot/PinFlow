@@ -76,8 +76,58 @@ function sha256(value) {
   return crypto.createHash("sha256").update(String(value)).digest("hex");
 }
 
+/* ---------- Criptografia dos tokens da Pinterest (AES-256-GCM) ----------
+ * Os tokens de acesso ficam no banco só criptografados. A chave vem de
+ * TOKEN_ENCRYPTION_KEY (32 bytes em base64 ou 64 caracteres hex).
+ * Sem a chave, na Vercel, o sistema se recusa a guardar tokens.
+ */
+
+function encryptionKey() {
+  const raw = process.env.TOKEN_ENCRYPTION_KEY;
+  if (raw) {
+    const buf = /^[0-9a-fA-F]{64}$/.test(raw) ? Buffer.from(raw, "hex") : Buffer.from(raw, "base64");
+    if (buf.length !== 32) {
+      const e = new Error("TOKEN_ENCRYPTION_KEY precisa ter 32 bytes (base64) ou 64 caracteres hex");
+      e.code = "CONFIG";
+      throw e;
+    }
+    return buf;
+  }
+  if (process.env.VERCEL) {
+    const e = new Error("TOKEN_ENCRYPTION_KEY ausente");
+    e.code = "CONFIG";
+    throw e;
+  }
+  // Só para desenvolvimento local
+  return crypto.createHash("sha256").update("chave-somente-para-desenvolvimento").digest();
+}
+
+function encrypt(text) {
+  if (text === null || text === undefined) return null;
+  const key = encryptionKey();
+  const iv = crypto.randomBytes(12);
+  const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
+  const data = Buffer.concat([cipher.update(String(text), "utf8"), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return ["v1", iv.toString("base64"), tag.toString("base64"), data.toString("base64")].join(":");
+}
+
+function decrypt(payload) {
+  if (!payload) return null;
+  const parts = String(payload).split(":");
+  if (parts.length !== 4 || parts[0] !== "v1") {
+    const e = new Error("Token guardado em formato desconhecido");
+    e.code = "DECRYPT";
+    throw e;
+  }
+  const key = encryptionKey();
+  const decipher = crypto.createDecipheriv("aes-256-gcm", key, Buffer.from(parts[1], "base64"));
+  decipher.setAuthTag(Buffer.from(parts[2], "base64"));
+  return Buffer.concat([decipher.update(Buffer.from(parts[3], "base64")), decipher.final()]).toString("utf8");
+}
+
 function hmac(secret, value) {
   return crypto.createHmac("sha256", secret).update(String(value)).digest("hex");
 }
 
-module.exports = { hashPassword, verifyPassword, dummyHash, randomToken, randomId, publicId, sha256, hmac };
+module.exports = { hashPassword, verifyPassword, dummyHash, randomToken, randomId, publicId, sha256, hmac, encrypt, decrypt };

@@ -3,3 +3,4 @@ scripts/
 README.md
 .env.example
 .data/
+node_modules/

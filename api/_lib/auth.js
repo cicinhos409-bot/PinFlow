@@ -2,7 +2,7 @@
 
 const config = require("./config");
 const { randomToken, randomId, sha256, hmac } = require("./crypto");
-const { parseCookies, buildCookie, isSecure, clientIp } = require("./http");
+const { parseCookies, buildCookie, appendCookie, isSecure, clientIp } = require("./http");
 
 function secret() {
   const value = process.env.SESSION_SECRET;
@@ -22,14 +22,24 @@ function ipHash(req) {
 
 function publicUser(user) {
   // "id" aqui é o id público (o das URLs). O id interno nunca sai do servidor.
-  return { id: user.public_id, email: user.email, name: user.name || "" };
+  return {
+    id: user.public_id,
+    email: user.email,
+    name: user.name || "",
+    timezone: user.timezone || "America/Sao_Paulo",
+    role: user.role || "user",
+    email_verified: Boolean(user.email_verified_at),
+    notify_failures: user.notify_failures !== false,
+    notify_token_expiry: user.notify_token_expiry !== false,
+    created_at: user.created_at,
+  };
 }
 
 async function startSession(db, req, res, user) {
   const token = randomToken();
   const now = new Date();
   const expires = new Date(now.getTime() + config.SESSION_DAYS * 24 * 60 * 60 * 1000);
-  await db.createSession({
+  await db.insert("sessions", {
     id: randomId(),
     user_id: user.id,
     token_hash: sha256(token), // o token em si nunca é guardado
@@ -37,16 +47,17 @@ async function startSession(db, req, res, user) {
     ip_hash: ipHash(req),
     expires_at: expires.toISOString(),
     revoked_at: null,
+    last_seen_at: now.toISOString(),
     created_at: now.toISOString(),
   });
-  res.setHeader(
-    "Set-Cookie",
+  appendCookie(
+    res,
     buildCookie(config.COOKIE_NAME, token, { maxAge: config.SESSION_DAYS * 24 * 60 * 60, secure: isSecure(req) })
   );
 }
 
 function clearSessionCookie(req, res) {
-  res.setHeader("Set-Cookie", buildCookie(config.COOKIE_NAME, "", { maxAge: 0, secure: isSecure(req) }));
+  appendCookie(res, buildCookie(config.COOKIE_NAME, "", { maxAge: 0, secure: isSecure(req) }));
 }
 
 function readToken(req) {
@@ -58,12 +69,17 @@ function readToken(req) {
 async function currentSession(db, req) {
   const token = readToken(req);
   if (!token) return null;
-  const session = await db.findSessionByTokenHash(sha256(token));
+  const session = await db.findOne("sessions", { token_hash: sha256(token) });
   if (!session || session.revoked_at) return null;
   if (new Date(session.expires_at).getTime() <= Date.now()) return null;
-  const user = await db.findUserById(session.user_id);
+  const user = await db.findOne("users", { id: session.user_id, deleted_at: null });
   if (!user || user.status !== "active") return null;
+  // "visto por último": atualiza no máximo uma vez por hora para não escrever à toa
+  const seen = session.last_seen_at ? new Date(session.last_seen_at).getTime() : 0;
+  if (Date.now() - seen > 60 * 60 * 1000) {
+    db.update("sessions", { id: session.id }, { last_seen_at: new Date().toISOString() }).catch(() => {});
+  }
   return { user, session };
 }
 
-module.exports = { ipHash, publicUser, startSession, clearSessionCookie, readToken, currentSession };
+module.exports = { secret, ipHash, publicUser, startSession, clearSessionCookie, readToken, currentSession };

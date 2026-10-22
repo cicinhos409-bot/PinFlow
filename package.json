@@ -2,11 +2,27 @@
   "name": "plataforma-pinterest",
   "version": "0.1.0",
   "private": true,
-  "description": "Plataforma SaaS para agendar pins em várias contas do Pinterest (landing page inicial)",
+  "description": "Plataforma SaaS para programar pins (imagem e vídeo) em várias contas do Pinterest pela API oficial",
   "scripts": {
     "dev": "vercel dev",
     "dev:local": "node scripts/dev-server.js",
+    "test": "npm run check && npm run test:auth && npm run test:api && npm run test:postgres",
     "test:auth": "node scripts/test-auth.js",
-    "check": "for f in api/_lib/*.js api/auth/*.js; do node --check $f || exit 1; done && node --check js/config.js && node --check js/main.js && node --check js/auth.js && node --check scripts/dev-server.js && node --check scripts/test-auth.js"
+    "test:api": "node scripts/test-api.js",
+    "test:postgres": "node scripts/test-postgres.js",
+    "build:vendor": "esbuild scripts/blob-client-entry.js --bundle --format=iife --global-name=VercelBlob --platform=browser --target=es2018 --minify --outfile=js/vendor/vercel-blob-client.js",
+    "check": "for f in api/index.js api/_lib/*.js api/_lib/routes/*.js js/*.js js/pages/*.js scripts/*.js; do node --check $f || exit 1; done"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.8.2",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.3.16",
+    "@electric-sql/pglite-socket": "^0.0.22",
+    "esbuild": "^0.25.12"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

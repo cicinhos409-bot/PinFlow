@@ -1,6 +1,11 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/index.js": { "maxDuration": 300, "memory": 1024 }
+  },
+  "crons": [{ "path": "/api/cron/daily", "schedule": "0 4 * * *" }],
   "redirects": [
     { "source": "/entrar", "destination": "/app/login", "permanent": true },
     { "source": "/cadastro", "destination": "/app/cadastro", "permanent": true },
@@ -8,10 +13,18 @@
     { "source": "/app", "destination": "/app/dashboard", "permanent": false }
   ],
   "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/index?__path=:path*" },
     { "source": "/app/login/:id", "destination": "/app/login" },
+    { "source": "/app/esqueci-senha", "destination": "/app/esqueci-senha" },
+    { "source": "/app/redefinir/:token", "destination": "/app/redefinir" },
+    { "source": "/app/confirmar/:token", "destination": "/app/confirmar" },
     { "source": "/app/dashboard/:id", "destination": "/app/dashboard" },
+    { "source": "/app/contas/:id/:account", "destination": "/app/conta" },
     { "source": "/app/contas/:id", "destination": "/app/contas" },
+    { "source": "/app/pins/:id/novo", "destination": "/app/pin-novo" },
+    { "source": "/app/pins/:id/:pin", "destination": "/app/pin" },
     { "source": "/app/pins/:id", "destination": "/app/pins" },
+    { "source": "/app/historico/:id", "destination": "/app/historico" },
     { "source": "/app/configuracoes/:id", "destination": "/app/configuracoes" },
     { "source": "/app/configura%C3%A7%C3%B5es", "destination": "/app/configuracoes" },
     { "source": "/app/configura%C3%A7%C3%B5es/:id", "destination": "/app/configuracoes" },

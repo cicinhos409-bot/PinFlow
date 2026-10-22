@@ -18,6 +18,7 @@ process.env.SESSION_SECRET = "segredo-de-teste-com-mais-de-16-caracteres";
 delete process.env.VERCEL;
 
 const { createServer } = require("./dev-server");
+const { resetDbCache } = require("../api/_lib/db");
 
 let base = "";
 let passed = 0;
@@ -212,15 +213,18 @@ async function main() {
 
   console.log("\nBanco não configurado");
   process.env.AUTH_STORE = "";
+  resetDbCache();
   r = await call("GET", "/api/auth/me");
   check("sem banco -> 503 com mensagem clara", r.status === 503 && r.data.error.code === "not_configured");
   r = await call("POST", "/api/auth/logout", { body: {}, cookie: cookieB });
   check("sair continua funcionando sem banco (limpa o cookie)", r.status === 200 && /Max-Age=0/i.test(r.setCookie || ""));
   process.env.AUTH_STORE = "file";
   process.env.VERCEL = "1";
+  resetDbCache();
   r = await call("GET", "/api/auth/me");
   check("armazenamento em arquivo é recusado quando roda na Vercel", r.status === 503);
   delete process.env.VERCEL;
+  resetDbCache();
 
   server.close();
   fs.rmSync(tmp, { recursive: true, force: true });

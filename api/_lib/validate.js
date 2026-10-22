@@ -64,9 +64,60 @@ function validatePassword(password, email) {
   return null;
 }
 
-function cleanName(value) {
+function cleanText(value, max) {
   if (typeof value !== "string") return "";
-  return value.replace(/[\u0000-\u001f\u007f]/g, "").trim().slice(0, 80);
+  return value.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim().slice(0, max || 1000);
 }
 
-module.exports = { normalizeEmail, validEmail, validatePassword, cleanName };
+function cleanName(value) {
+  return cleanText(value, 80).replace(/\s+/g, " ");
+}
+
+function validTimezone(tz) {
+  if (typeof tz !== "string" || tz.length > 64) return false;
+  try {
+    new Intl.DateTimeFormat("pt-BR", { timeZone: tz });
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Link de destino do pin: só http(s), sem credenciais, tamanho limitado.
+function validLink(value) {
+  if (typeof value !== "string" || value.length > config.PIN_LINK_MAX) return false;
+  try {
+    const u = new URL(value);
+    return (u.protocol === "https:" || u.protocol === "http:") && !u.username && !u.password && Boolean(u.hostname);
+  } catch (e) {
+    return false;
+  }
+}
+
+function isIsoDate(value) {
+  return typeof value === "string" && !Number.isNaN(Date.parse(value));
+}
+
+function clampInt(value, min, max, fallback) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, Math.trunc(n)));
+}
+
+// Id público (12 caracteres de a-z e 2-9, como gerado em crypto.publicId)
+function validPublicId(value) {
+  return typeof value === "string" && /^[a-z2-9]{6,32}$/.test(value);
+}
+
+module.exports = {
+  normalizeEmail,
+  validEmail,
+  validatePassword,
+  cleanText,
+  cleanName,
+  validTimezone,
+  validLink,
+  isIsoDate,
+  clampInt,
+  validPublicId,
+};
