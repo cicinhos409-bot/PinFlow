@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;700;800;900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20261022b">
+  <link rel="stylesheet" href="/css/style.css?v=20261022c">
 </head>
 <body data-page="dashboard" data-app="1" class="app-body">
   <div class="app-layout">
@@ -18,7 +18,7 @@
 
     <header class="app-topbar">
       <button class="icon-btn" type="button" id="sidebar-toggle" aria-controls="sidebar" aria-expanded="false" aria-label="Abrir menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      <a class="logo" href="/app/dashboard" data-app-link="dashboard" aria-label="Dashboard">
+      <a class="logo" href="/app/dashboard" aria-label="Dashboard" data-app-link="dashboard">
           <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
             <rect width="32" height="32" rx="9" fill="#fe9a00"/>
             <path d="M9 22V10h7a4.5 4.5 0 0 1 0 9h-3.5" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -30,7 +30,7 @@
 
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
-        <a class="logo" href="/app/dashboard" data-app-link="dashboard" aria-label="Dashboard">
+        <a class="logo" href="/app/dashboard" aria-label="Dashboard" data-app-link="dashboard">
           <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
             <rect width="32" height="32" rx="9" fill="#fe9a00"/>
             <path d="M9 22V10h7a4.5 4.5 0 0 1 0 9h-3.5" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -42,7 +42,9 @@
       <nav class="sidebar-nav" aria-label="Menu da plataforma">
           <a href="/app/dashboard" data-app-link="dashboard" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Dashboard</span></a>
           <a href="/app/contas" data-app-link="contas"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Contas do Pinterest</span></a>
-          <a href="/app/pins" data-app-link="pins"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l3 6 6 1-4.5 4 1.5 7-6-3-6 3 1.5-7L3 10l6-1z"/></svg><span>Pins programados</span></a>
+          <a href="/app/pins" data-app-link="pins"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l3 6 6 1-4.5 4 1.5 7-6-3-6 3 1.5-7L3 10l6-1z"/></svg><span>Pins</span></a>
+          <a href="/app/pins/novo" data-app-link="pins:novo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Novo pin</span></a>
+          <a href="/app/historico" data-app-link="historico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Histórico</span></a>
           <a href="/app/configuracoes" data-app-link="configuracoes"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Configurações</span></a>
       </nav>
       <div class="sidebar-user">
@@ -63,13 +65,16 @@
           <h1>Olá, <span data-user-name></span></h1>
           <p class="section-intro">Resumo das suas contas e dos pins programados.</p>
         </div>
-        <a class="btn btn-primary" href="/app/contas" data-app-link="contas">Conectar conta do Pinterest</a>
+        <a class="btn btn-primary" id="primary-cta" href="/app/contas" data-app-link="contas">Conectar conta do Pinterest</a>
       </div>
+
+      <p class="notice is-warn" id="reconnect-warning" hidden><span></span> <a href="/app/contas">Ver contas</a></p>
+
       <section class="stats" aria-label="Resumo">
-        <div class="stat"><span class="stat-label">Contas conectadas</span><strong class="stat-value" data-stat="accounts">0</strong><span class="stat-note">Nenhuma ainda</span></div>
-        <div class="stat"><span class="stat-label">Pins na fila</span><strong class="stat-value" data-stat="queued">0</strong><span class="stat-note">Aguardando horário</span></div>
+        <div class="stat"><span class="stat-label">Contas conectadas</span><strong class="stat-value" data-stat="accounts">0</strong><span class="stat-note" data-stat-note="accounts">Nenhuma ainda</span></div>
+        <div class="stat"><span class="stat-label">Pins na fila</span><strong class="stat-value" data-stat="queued">0</strong><span class="stat-note" data-stat-note="queued">Fila vazia</span></div>
         <div class="stat"><span class="stat-label">Publicados (7 dias)</span><strong class="stat-value" data-stat="published">0</strong><span class="stat-note">Imagem e vídeo</span></div>
-        <div class="stat"><span class="stat-label">Falhas (7 dias)</span><strong class="stat-value" data-stat="failed">0</strong><span class="stat-note">Nada para corrigir</span></div>
+        <div class="stat"><span class="stat-label">Falhas (7 dias)</span><strong class="stat-value" data-stat="failed">0</strong><span class="stat-note" data-stat-note="failed">Nada para corrigir</span></div>
       </section>
 
       <div class="dash-grid dash-grid-main">
@@ -77,8 +82,8 @@
           <h2 id="comece-titulo">Comece por aqui</h2>
           <ol class="steps-list">
             <li class="is-done"><span class="step-num">✓</span><div><strong>Criar sua conta</strong><p>Pronto. Você já está dentro.</p></div></li>
-            <li><span class="step-num">2</span><div><strong>Conectar uma conta do Pinterest</strong><p>Pelo login oficial do Pinterest. Nós nunca pedimos a sua senha do Pinterest.</p><a class="btn btn-primary btn-small" href="/app/contas" data-app-link="contas">Conectar conta</a></div></li>
-            <li><span class="step-num">3</span><div><strong>Programar o primeiro pin</strong><p>Escolha a imagem ou o vídeo, a pasta e o horário. O resto é com a gente.</p></div></li>
+            <li id="step-connect"><span class="step-num">2</span><div><strong>Conectar uma conta do Pinterest</strong><p>Pelo login oficial da Pinterest. Nós nunca pedimos a sua senha da Pinterest.</p><a class="btn btn-primary btn-small" href="/app/contas" data-app-link="contas">Conectar conta</a></div></li>
+            <li id="step-pin"><span class="step-num">3</span><div><strong>Programar o primeiro pin</strong><p>Escolha a imagem ou o vídeo, a pasta e o horário. O resto é com a gente.</p><a class="btn btn-ghost btn-small" href="/app/pins/novo" data-app-link="pins:novo">Novo pin</a></div></li>
           </ol>
         </section>
 
@@ -87,29 +92,15 @@
             <h2 id="proximos-titulo">Próximos pins</h2>
             <a href="/app/pins" data-app-link="pins">Ver todos</a>
           </div>
-          <div class="empty">
-            <div class="empty-art" aria-hidden="true"><div class="mini-pin"></div><div class="mini-pin"></div><div class="mini-pin"></div></div>
-            <p><strong>Nenhum pin programado.</strong></p>
-            <p>Conecte uma conta do Pinterest para começar a programar.</p>
-          </div>
+          <div id="next-pins" class="card-body"></div>
         </section>
 
-        <section class="dash-card" aria-labelledby="contas-titulo">
+        <section class="dash-card dash-card-wide" aria-labelledby="atividade-titulo">
           <div class="card-head">
-            <h2 id="contas-titulo">Contas do Pinterest</h2>
-            <a href="/app/contas" data-app-link="contas">Gerenciar</a>
+            <h2 id="atividade-titulo">Atividade recente</h2>
+            <a href="/app/historico" data-app-link="historico">Ver histórico</a>
           </div>
-          <div class="empty">
-            <p><strong>Nenhuma conta conectada.</strong></p>
-            <p>Você pode conectar várias contas e escolher em qual publicar cada pin.</p>
-          </div>
-        </section>
-
-        <section class="dash-card" aria-labelledby="atividade-titulo">
-          <h2 id="atividade-titulo">Atividade recente</h2>
-          <div class="empty">
-            <p>Aqui você verá o que foi publicado, o que falhou e por quê.</p>
-          </div>
+          <div id="recent-activity" class="card-body"></div>
         </section>
       </div>
     </main>
@@ -117,8 +108,9 @@
     <p class="dash-loading app-main" id="app-loading" role="status">Carregando…</p>
   </div>
 
-  <script src="/js/config.js?v=20261022b"></script>
-  <script src="/js/main.js?v=20261022b"></script>
-  <script src="/js/auth.js?v=20261022b"></script>
+  <script src="/js/config.js?v=20261022c"></script>
+  <script src="/js/ui.js?v=20261022c"></script>
+  <script src="/js/app.js?v=20261022c"></script>
+  <script src="/js/pages/dashboard.js?v=20261022c"></script>
 </body>
 </html>

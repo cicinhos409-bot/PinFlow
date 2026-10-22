@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nova senha</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;700;800;900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css?v=20261022c">
+</head>
+<body data-page="redefinir">
+  <header class="site-header is-scrolled">
+    <div class="container nav">
+      <a class="logo" href="/" aria-label="Página inicial">
+          <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="9" fill="#fe9a00"/>
+            <path d="M9 22V10h7a4.5 4.5 0 0 1 0 9h-3.5" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="23" cy="22" r="2.2" fill="#000000"/>
+          </svg>
+          <span data-brand>Pinflow</span>
+        </a>
+      <a class="btn btn-ghost btn-small" href="/">Voltar ao início</a>
+    </div>
+  </header>
+
+  <main class="auth">
+    <div class="container">
+      <section class="auth-card" aria-labelledby="titulo">
+        <h1 id="titulo">Crie uma nova senha</h1>
+        <p class="section-intro">Depois de salvar, todos os aparelhos conectados precisam entrar de novo.</p>
+
+        <form class="form" id="auth-form" novalidate>
+          <div class="field">
+            <label for="password">Nova senha</label>
+            <div class="pw">
+              <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required aria-describedby="pw-hint">
+              <button class="pw-toggle" type="button" aria-controls="password" aria-pressed="false">Mostrar</button>
+            </div>
+            <div class="meter" aria-hidden="true"><i id="meter-bar"></i></div>
+            <p class="hint" id="pw-hint">Use pelo menos 8 caracteres. Uma frase longa é mais forte que uma senha curta cheia de símbolos. <strong id="meter-label"></strong></p>
+          </div>
+
+          <div class="field">
+            <label for="password2">Repita a nova senha</label>
+            <div class="pw">
+              <input id="password2" name="password2" type="password" autocomplete="new-password" maxlength="128" required >
+              <button class="pw-toggle" type="button" aria-controls="password2" aria-pressed="false">Mostrar</button>
+            </div>
+          </div>
+          <button class="btn btn-primary" type="submit" id="submit">Salvar nova senha</button>
+          <p class="form-msg" id="form-msg" role="alert" aria-live="polite"></p>
+        </form>
+        <p class="auth-alt"><a href="/app/esqueci-senha">Pedir outro link</a></p>
+      </section>
+    </div>
+  </main>
+
+  <script src="/js/config.js?v=20261022c"></script>
+  <script src="/js/ui.js?v=20261022c"></script>
+  <script src="/js/main.js?v=20261022c"></script>
+  <script src="/js/auth.js?v=20261022c"></script>
+</body>
+</html>

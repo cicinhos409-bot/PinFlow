@@ -70,3 +70,12 @@ Tabela `auth_attempts`: `id`, `kind` (login|register), `email_key` (e-mail norma
 
 ## Id público (URLs)
 Coluna `public_id` em `users`: texto de 12 caracteres, aleatório, único (índice único). É o id que aparece em `/app/dashboard/<id>`. O `id` interno (UUID) nunca sai do servidor.
+
+## Tokens por e-mail
+Tabela `auth_tokens`: `id`, `user_id`, `kind` (`reset_password` | `verify_email`), `token_hash` (SHA-256; o token nunca é guardado), `expires_at`, `used_at`, `created_at`. Redefinir senha vale 60 min; confirmar e-mail, 48 h.
+
+## Preferências no usuário
+`timezone` (padrão America/Sao_Paulo), `notify_failures`, `notify_token_expiry`, `email_verified_at`.
+
+## Esquema real
+O SQL definitivo está em `api/_lib/schema.sql` e é aplicado automaticamente na primeira requisição.

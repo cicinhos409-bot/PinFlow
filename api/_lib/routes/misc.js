@@ -84,7 +84,7 @@ router.add("POST", "/worker/run", async ({ req, res }) => {
   const db = getDb();
   const key = "worker:" + ipHash(req);
   const since = new Date(Date.now() - 60 * 1000).toISOString();
-  if ((await db.count("auth_attempts", { key, at: { gte: since } })) >= 6) return fail(res, 429, "rate_limited", "Aguarde um pouco.");
+  if ((await db.count("auth_attempts", { key, at: { gte: since } })) >= 30) return fail(res, 429, "rate_limited", "Aguarde um pouco.");
   await db.insert("auth_attempts", { key, at: new Date().toISOString() });
 
   const now = new Date();

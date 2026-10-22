@@ -67,6 +67,19 @@ function createFakePinterest() {
     const p = url.pathname;
     state.calls.push({ method: req.method, path: p });
 
+    // Tela de autorização (imita o login oficial): o botão volta para o redirect_uri com o código.
+    if (p === "/oauth/" && req.method === "GET") {
+      const back = new URL(url.searchParams.get("redirect_uri") || "http://localhost/");
+      back.searchParams.set("code", "codigo-valido");
+      back.searchParams.set("state", url.searchParams.get("state") || "");
+      res.setHeader("Content-Type", "text/html; charset=utf-8");
+      return res.end(
+        "<!doctype html><html lang=\"pt-BR\"><body style=\"font-family:sans-serif;padding:40px;background:#fff\">" +
+          "<h1>Pinterest (simulação)</h1><p>O app <b>" + (url.searchParams.get("client_id") || "") + "</b> pede acesso: " + (url.searchParams.get("scope") || "") + "</p>" +
+          "<p><a id=\"authorize\" href=\"" + back.toString() + "\">Autorizar</a> · <a id=\"deny\" href=\"" + back.origin + "/api/pinterest/callback?error=access_denied&state=" + encodeURIComponent(url.searchParams.get("state") || "") + "\">Recusar</a></p></body></html>"
+      );
+    }
+
     // Upload do vídeo (sem Bearer)
     if (p === "/upload" && req.method === "POST") {
       const body = await readBody(req);

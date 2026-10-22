@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;700;800;900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20261022b">
+  <link rel="stylesheet" href="/css/style.css?v=20261022c">
 </head>
 <body data-page="configuracoes" data-app="1" class="app-body">
   <div class="app-layout">
@@ -18,7 +18,7 @@
 
     <header class="app-topbar">
       <button class="icon-btn" type="button" id="sidebar-toggle" aria-controls="sidebar" aria-expanded="false" aria-label="Abrir menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      <a class="logo" href="/app/dashboard" data-app-link="dashboard" aria-label="Dashboard">
+      <a class="logo" href="/app/dashboard" aria-label="Dashboard" data-app-link="dashboard">
           <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
             <rect width="32" height="32" rx="9" fill="#fe9a00"/>
             <path d="M9 22V10h7a4.5 4.5 0 0 1 0 9h-3.5" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -30,7 +30,7 @@
 
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
-        <a class="logo" href="/app/dashboard" data-app-link="dashboard" aria-label="Dashboard">
+        <a class="logo" href="/app/dashboard" aria-label="Dashboard" data-app-link="dashboard">
           <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
             <rect width="32" height="32" rx="9" fill="#fe9a00"/>
             <path d="M9 22V10h7a4.5 4.5 0 0 1 0 9h-3.5" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -42,7 +42,9 @@
       <nav class="sidebar-nav" aria-label="Menu da plataforma">
           <a href="/app/dashboard" data-app-link="dashboard"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span>Dashboard</span></a>
           <a href="/app/contas" data-app-link="contas"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Contas do Pinterest</span></a>
-          <a href="/app/pins" data-app-link="pins"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l3 6 6 1-4.5 4 1.5 7-6-3-6 3 1.5-7L3 10l6-1z"/></svg><span>Pins programados</span></a>
+          <a href="/app/pins" data-app-link="pins"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l3 6 6 1-4.5 4 1.5 7-6-3-6 3 1.5-7L3 10l6-1z"/></svg><span>Pins</span></a>
+          <a href="/app/pins/novo" data-app-link="pins:novo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Novo pin</span></a>
+          <a href="/app/historico" data-app-link="historico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Histórico</span></a>
           <a href="/app/configuracoes" data-app-link="configuracoes" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Configurações</span></a>
       </nav>
       <div class="sidebar-user">
@@ -65,54 +67,76 @@
         </div>
         
       </div>
+
       <div class="dash-grid">
         <section class="dash-card" aria-labelledby="perfil-titulo">
-          <h2 id="perfil-titulo">Perfil</h2>
+          <h2 id="perfil-titulo">Perfil e preferências</h2>
+          <p class="notice is-warn" id="verify-box" hidden>Seu e-mail ainda não foi confirmado. <button class="btn btn-small btn-ghost" type="button" id="verify-send">Reenviar confirmação</button></p>
           <form class="form" id="profile-form" novalidate>
             <div class="field">
               <label for="email">E-mail</label>
-              <input id="email" type="email" data-user-email-input readonly>
-              <p class="hint">A troca de e-mail chega junto com a confirmação por e-mail.</p>
+              <input id="email" type="email" readonly>
             </div>
             <div class="field">
               <label for="name">Nome</label>
               <input id="name" name="name" type="text" autocomplete="name" maxlength="80">
             </div>
-            <button class="btn btn-primary" type="submit" id="profile-submit">Salvar nome</button>
-            <p class="form-msg" id="profile-msg" role="alert" aria-live="polite"></p>
+            <div class="field">
+              <label for="timezone">Fuso horário</label>
+              <select id="timezone" name="timezone"></select>
+              <p class="hint">Os horários dos pins são mostrados e programados neste fuso.</p>
+            </div>
+            <label class="check"><input type="checkbox" name="notify_failures"><span>Avisar por e-mail quando um pin falhar</span></label>
+            <label class="check"><input type="checkbox" name="notify_token_expiry"><span>Avisar por e-mail quando uma conta precisar ser reconectada</span></label>
+            <button class="btn btn-primary" type="submit">Salvar</button>
           </form>
         </section>
 
         <section class="dash-card" aria-labelledby="senha-titulo">
           <h2 id="senha-titulo">Senha</h2>
           <form class="form" id="password-form" novalidate>
-            <div class="field">
-              <label for="currentPassword">Senha atual</label>
-              <div class="pw">
-                <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" maxlength="128" required>
-                <button class="pw-toggle" type="button" aria-controls="currentPassword" aria-pressed="false">Mostrar</button>
-              </div>
+
+          <div class="field">
+            <label for="currentPassword">Senha atual</label>
+            <div class="pw">
+              <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" maxlength="128" required >
+              <button class="pw-toggle" type="button" aria-controls="currentPassword" aria-pressed="false">Mostrar</button>
             </div>
+          </div>
             <div class="field">
-              <label for="password">Nova senha</label>
+              <label for="newPassword">Nova senha</label>
               <div class="pw">
-                <input id="password" name="newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" required aria-describedby="pw-hint">
-                <button class="pw-toggle" type="button" aria-controls="password" aria-pressed="false">Mostrar</button>
+                <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" required>
+                <button class="pw-toggle" type="button" aria-controls="newPassword" aria-pressed="false">Mostrar</button>
               </div>
-              <div class="meter" aria-hidden="true"><i id="meter-bar"></i></div>
-              <p class="hint" id="pw-hint">Pelo menos 8 caracteres. <strong id="meter-label"></strong></p>
+              <p class="hint">Pelo menos 8 caracteres.</p>
             </div>
-            <div class="field">
-              <label for="password2">Repita a nova senha</label>
-              <div class="pw">
-                <input id="password2" name="password2" type="password" autocomplete="new-password" maxlength="128" required>
-                <button class="pw-toggle" type="button" aria-controls="password2" aria-pressed="false">Mostrar</button>
-              </div>
+
+          <div class="field">
+            <label for="password2">Repita a nova senha</label>
+            <div class="pw">
+              <input id="password2" name="password2" type="password" autocomplete="new-password" maxlength="128" required >
+              <button class="pw-toggle" type="button" aria-controls="password2" aria-pressed="false">Mostrar</button>
             </div>
-            <button class="btn btn-primary" type="submit" id="password-submit">Trocar senha</button>
+          </div>
+            <button class="btn btn-primary" type="submit">Trocar senha</button>
             <p class="form-msg" id="password-msg" role="alert" aria-live="polite"></p>
             <p class="hint">Ao trocar a senha, os outros aparelhos conectados são desconectados.</p>
           </form>
+        </section>
+
+        <section class="dash-card" aria-labelledby="sessoes-titulo">
+          <div class="card-head">
+            <h2 id="sessoes-titulo">Aparelhos conectados</h2>
+            <button class="btn btn-small btn-ghost" type="button" id="revoke-others">Sair dos outros</button>
+          </div>
+          <div id="sessions" class="card-body"><p class="hint">Carregando...</p></div>
+        </section>
+
+        <section class="dash-card danger-zone" aria-labelledby="excluir-titulo">
+          <h2 id="excluir-titulo">Excluir conta</h2>
+          <p>Apaga sua conta na plataforma, as contas do Pinterest conectadas, os pins programados, os arquivos e o histórico. Nada é apagado na Pinterest.</p>
+          <button class="btn btn-danger-ghost" type="button" id="delete-account">Excluir minha conta</button>
         </section>
       </div>
     </main>
@@ -120,8 +144,9 @@
     <p class="dash-loading app-main" id="app-loading" role="status">Carregando…</p>
   </div>
 
-  <script src="/js/config.js?v=20261022b"></script>
-  <script src="/js/main.js?v=20261022b"></script>
-  <script src="/js/auth.js?v=20261022b"></script>
+  <script src="/js/config.js?v=20261022c"></script>
+  <script src="/js/ui.js?v=20261022c"></script>
+  <script src="/js/app.js?v=20261022c"></script>
+  <script src="/js/pages/configuracoes.js?v=20261022c"></script>
 </body>
 </html>

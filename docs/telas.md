@@ -16,9 +16,9 @@ Regra que vale para todas: nada de dado falso. Se não há informação, a tela 
 | 3 | Política de Privacidade | `/privacidade` | 1 ✅ (rascunho) |
 | 4 | Login | `/app/login` | 1 ✅ |
 | 5 | Criar conta | `/app/cadastro` | 1 ✅ |
-| 6 | Esqueci a senha | `/app/esqueci-senha` | 1 |
-| 7 | Redefinir senha | `/app/redefinir/<token>` | 1 |
-| 8 | Confirmar e-mail | `/app/confirmar/<token>` | 1 |
+| 6 | Esqueci a senha | `/app/esqueci-senha` | 1 ✅ |
+| 7 | Redefinir senha | `/app/redefinir/<token>` | 1 ✅ |
+| 8 | Confirmar e-mail | `/app/confirmar/<token>` | 1 ✅ |
 
 **1. Landing.** Promessa, como funciona, segurança, planos, FAQ, lista de espera. Existe para transformar visitante em cadastro.
 
@@ -37,14 +37,14 @@ Regra que vale para todas: nada de dado falso. Se não há informação, a tela 
 | # | Tela | Endereço | Fase |
 |---|------|----------|------|
 | 9 | Dashboard | `/app/dashboard/<id>` | 1 ✅ |
-| 10 | Contas do Pinterest | `/app/contas/<id>` | 1 ✅ (vazia) |
-| 11 | Detalhe da conta | `/app/contas/<id>/<conta>` | 1 |
-| 12 | Novo pin (agendar) | `/app/pins/<id>/novo` | 1 |
-| 13 | Pins programados (fila) | `/app/pins/<id>` | 1 ✅ (vazia) |
-| 14 | Detalhe do pin | `/app/pins/<id>/<pin>` | 1 |
-| 15 | Histórico / Atividade | `/app/historico/<id>` | 1 |
+| 10 | Contas do Pinterest | `/app/contas/<id>` | 1 ✅ |
+| 11 | Detalhe da conta | `/app/contas/<id>/<conta>` | 1 ✅ |
+| 12 | Novo pin (agendar) | `/app/pins/<id>/novo` | 1 ✅ |
+| 13 | Pins programados (fila) | `/app/pins/<id>` | 1 ✅ (lista + calendário) |
+| 14 | Detalhe do pin | `/app/pins/<id>/<pin>` | 1 ✅ |
+| 15 | Histórico / Atividade | `/app/historico/<id>` | 1 ✅ |
 | 16 | Configurações | `/app/configuracoes/<id>` | 1 ✅ |
-| 17 | Biblioteca de mídia | `/app/midia/<id>` | 2 |
+| 17 | Biblioteca de mídia | dentro do seletor de mídia do pin | 2 ✅ (parcial) |
 | 18 | Métricas | `/app/metricas/<id>` | 2 |
 | 19 | Plano e cobrança | `/app/plano/<id>` | 2 |
 | 20 | Equipe | `/app/equipe/<id>` | 3 |
@@ -104,5 +104,5 @@ Regra que vale para todas: nada de dado falso. Se não há informação, a tela 
 | 2 | 17–19, 21–23 | Dá para cobrar, acompanhar resultado e proteger o app |
 | 3 | 20 | Agências e times |
 
-Já feitas: 1, 2, 3 (rascunhos), 4, 5, 9, 10, 13 (vazias), 16.
-Próxima: conexão com o Pinterest (10 e 11), que depende do banco de dados.
+Já feitas: toda a Fase 1 (1 a 16, com 2 e 3 em rascunho) e a biblioteca de mídia dentro do seletor.
+Para ligar de verdade faltam só as chaves: banco (DATABASE_URL), Pinterest (APP_ID/SECRET), Vercel Blob e e-mail (ver docs/ligar.md).

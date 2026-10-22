@@ -11,7 +11,9 @@
     "test:api": "node scripts/test-api.js",
     "test:postgres": "node scripts/test-postgres.js",
     "build:vendor": "esbuild scripts/blob-client-entry.js --bundle --format=iife --global-name=VercelBlob --platform=browser --target=es2018 --minify --outfile=js/vendor/vercel-blob-client.js",
-    "check": "for f in api/index.js api/_lib/*.js api/_lib/routes/*.js js/*.js js/pages/*.js scripts/*.js; do node --check $f || exit 1; done"
+    "check": "for f in api/index.js api/_lib/*.js api/_lib/routes/*.js js/*.js js/pages/*.js scripts/*.js; do node --check $f || exit 1; done",
+    "build:pages": "node scripts/build-pages.js",
+    "dev:full": "node scripts/dev-full.js"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.2",
