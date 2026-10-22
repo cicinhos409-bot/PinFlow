@@ -43,7 +43,7 @@ function staticFileFor(pathname) {
   if (pathname === "/favicon.svg") return path.join(ROOT, "favicon.svg");
   if (/^\/(css|js)\/[A-Za-z0-9._-]+$/.test(pathname)) return path.join(ROOT, pathname);
   // Plataforma: /app/<página> ou /app/<página>/<id>  (o id é ignorado aqui; o JS da página lê a URL)
-  const app = /^\/app\/(login|cadastro|dashboard|contas|configuracoes|configurações)(?:\/[^/]+)?$/.exec(pathname);
+  const app = /^\/app\/(login|cadastro|dashboard|contas|pins|configuracoes|configurações)(?:\/[^/]+)?$/.exec(pathname);
   if (app) return path.join(ROOT, "app", (app[1] === "configurações" ? "configuracoes" : app[1]) + ".html");
   if (/^\/[a-z-]+$/.test(pathname)) return path.join(ROOT, pathname.slice(1) + ".html"); // URLs sem .html
   return null;

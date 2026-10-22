@@ -7,13 +7,14 @@
 | `/app/cadastro` | Criar conta |
 | `/app/dashboard/<id>` | Dashboard |
 | `/app/contas/<id>` | Contas do Pinterest |
+| `/app/pins/<id>` | Pins programados |
 | `/app/configuracoes/<id>` (ou `/app/configurações/<id>`) | Configurações: nome e troca de senha |
 
 `<id>` é o **id público** da conta: 12 caracteres aleatórios (ex.: `kajbxvtnbcsg`), gerado no cadastro. Não é sequencial, então ninguém adivinha o id de outra conta.
 
 Regra de segurança: o id da URL é só endereço. Quem manda é a sessão (cookie). O servidor sempre responde com os dados de quem está conectado; se a URL vier com outro id, o JavaScript corrige o endereço para o id certo. Nenhuma rota da API aceita id por parâmetro.
 
-Endereços antigos (`/entrar`, `/cadastro`, `/painel`) redirecionam para os novos. Arquivos: `app/*.html`, lógica em `js/auth.js`, rotas em `vercel.json` (rewrites/redirects).
+Endereços antigos (`/entrar`, `/cadastro`, `/painel`) redirecionam para os novos. Todas as páginas internas usam a mesma barra lateral (gaveta no celular). Arquivos: `app/*.html`, lógica em `js/auth.js`, rotas em `vercel.json` (rewrites/redirects).
 
 ## Endpoints (`/api/auth/*`, todos JSON)
 | Rota | Método | O que faz |

@@ -11,6 +11,7 @@
     { "source": "/app/login/:id", "destination": "/app/login" },
     { "source": "/app/dashboard/:id", "destination": "/app/dashboard" },
     { "source": "/app/contas/:id", "destination": "/app/contas" },
+    { "source": "/app/pins/:id", "destination": "/app/pins" },
     { "source": "/app/configuracoes/:id", "destination": "/app/configuracoes" },
     { "source": "/app/configura%C3%A7%C3%B5es", "destination": "/app/configuracoes" },
     { "source": "/app/configura%C3%A7%C3%B5es/:id", "destination": "/app/configuracoes" },

@@ -10,7 +10,7 @@
    * Se a URL tiver um id diferente, a página é corrigida para o id certo.
    */
 
-  var APP_PAGES = { login: 1, cadastro: 1, dashboard: 1, contas: 1, configuracoes: 1 };
+  var APP_PAGES = { login: 1, cadastro: 1, dashboard: 1, contas: 1, pins: 1, configuracoes: 1 };
 
   function appUrl(section, id) {
     return "/app/" + section + (id ? "/" + encodeURIComponent(id) : "");
@@ -262,11 +262,38 @@
       document.querySelectorAll("[data-user-email-input]").forEach(function (el) {
         el.value = user.email;
       });
+      document.querySelectorAll("[data-user-initial]").forEach(function (el) {
+        el.textContent = shownName.charAt(0).toUpperCase();
+      });
       var nameInput = document.getElementById("name");
       if (nameInput) nameInput.value = user.name || "";
 
       if (loading) loading.hidden = true;
       if (main) main.hidden = false;
+    });
+
+    // Barra lateral no celular (abre como gaveta)
+    var sidebar = document.getElementById("sidebar");
+    var sidebarToggle = document.getElementById("sidebar-toggle");
+    var backdrop = document.getElementById("sidebar-backdrop");
+    function setSidebar(open) {
+      if (!sidebar) return;
+      sidebar.classList.toggle("is-open", open);
+      document.body.classList.toggle("sidebar-open", open);
+      if (backdrop) backdrop.hidden = !open;
+      if (sidebarToggle) {
+        sidebarToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        sidebarToggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+      }
+    }
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener("click", function () {
+        setSidebar(!sidebar.classList.contains("is-open"));
+      });
+    }
+    if (backdrop) backdrop.addEventListener("click", function () { setSidebar(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setSidebar(false);
     });
 
     var logout = document.getElementById("logout");
