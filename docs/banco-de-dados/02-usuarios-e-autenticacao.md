@@ -78,4 +78,4 @@ Tabela `auth_tokens`: `id`, `user_id`, `kind` (`reset_password` | `verify_email`
 `timezone` (padrão America/Sao_Paulo), `notify_failures`, `notify_token_expiry`, `email_verified_at`.
 
 ## Esquema real
-O SQL definitivo está em `api/_lib/schema.sql` e é aplicado automaticamente na primeira requisição.
+O SQL definitivo está em `api/_lib/schema.js` e é aplicado automaticamente na primeira requisição.

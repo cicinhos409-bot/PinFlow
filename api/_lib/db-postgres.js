@@ -7,8 +7,6 @@
  * Implementa a interface descrita em db.js.
  */
 
-const fs = require("fs");
-const path = require("path");
 const { Pool, types } = require("pg");
 const { OPERATORS, assertTable, assertColumn } = require("./db");
 
@@ -44,7 +42,7 @@ function getPool() {
 
 // Migrações numeradas: a 1 é o schema.sql; as próximas entram aqui como SQL idempotente.
 const MIGRATIONS = [
-  { version: 1, sql: () => fs.readFileSync(path.join(__dirname, "schema.sql"), "utf8") },
+  { version: 1, sql: () => require("./schema") },
 ];
 
 async function migrate() {

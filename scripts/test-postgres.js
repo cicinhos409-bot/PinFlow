@@ -12,6 +12,12 @@ const path = require("path");
 const { spawn } = require("child_process");
 
 async function main() {
+  // Guarda contra travamentos (ex.: porta ocupada): falha em vez de esperar para sempre.
+  setTimeout(() => {
+    console.error("\nTempo esgotado no teste do Postgres.");
+    process.exit(1);
+  }, 180 * 1000).unref();
+
   const { PGlite } = require("@electric-sql/pglite");
   const { PGLiteSocketServer } = require("@electric-sql/pglite-socket");
   const db = await PGlite.create();

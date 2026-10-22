@@ -5,7 +5,7 @@
  *
  * Todo o código conversa só com o objeto devolvido por getDb(). Há dois adaptadores com a
  * mesma interface:
- *   - db-postgres.js  -> produção (DATABASE_URL). Cria as tabelas sozinho (schema.sql).
+ *   - db-postgres.js  -> produção (DATABASE_URL). Cria as tabelas sozinho (schema.js).
  *   - db-file.js      -> SOMENTE testes locais (AUTH_STORE=file). Recusado na Vercel.
  *
  * Interface (todos os métodos são assíncronos):

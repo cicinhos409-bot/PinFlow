@@ -1,3 +1,12 @@
+"use strict";
+
+/**
+ * Esquema do banco (Postgres). Aplicado automaticamente pela plataforma na primeira
+ * requisição (db-postgres.js). Todas as instruções são idempotentes.
+ * Fica em JS (e não .sql) para o empacotador da Vercel incluir o arquivo na função.
+ */
+
+module.exports = `
 -- Esquema do banco (Postgres). Aplicado automaticamente pela plataforma na primeira
 -- requisição (api/_lib/db-postgres.js). Todas as instruções são idempotentes.
 -- Datas em timestamptz; ids gerados pela aplicação (texto).
@@ -170,3 +179,4 @@ CREATE TABLE IF NOT EXISTS settings (
   value      text,
   updated_at timestamptz
 );
+`;

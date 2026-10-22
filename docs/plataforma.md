@@ -17,7 +17,7 @@ Stack: HTML, CSS e JavaScript puros no front; Node.js em **uma única função**
 | `api/index.js` | Entrada única da API; `vercel.json` reescreve `/api/*` para cá |
 | `api/_lib/router.js` | Roteador (método, caminho, sessão, JSON, mesma origem) |
 | `api/_lib/routes/*.js` | Rotas: `auth`, `accounts` (contas + pastas + OAuth), `media`, `pins`, `misc` (status, dashboard, histórico, fila, cron) |
-| `api/_lib/db.js`, `db-postgres.js`, `db-file.js`, `schema.sql` | Camada de dados (interface única; Postgres em produção, arquivo só em testes) |
+| `api/_lib/db.js`, `db-postgres.js`, `db-file.js`, `schema.js` | Camada de dados (interface única; Postgres em produção, arquivo só em testes) |
 | `api/_lib/pinterest.js` | Cliente da API da Pinterest e do login oficial; renovação de token; erros em português |
 | `api/_lib/worker.js` | Fila de publicação (imagem e vídeo), tentativas, limites, manutenção diária |
 | `api/_lib/storage.js` | Vercel Blob (upload direto do navegador) ou pasta local |
