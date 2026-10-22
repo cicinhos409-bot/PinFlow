@@ -149,6 +149,37 @@
       });
     }
 
+    var fmtN = new Intl.NumberFormat("pt-BR");
+    function renderMetrics(p) {
+      var card = document.getElementById("metrics-card");
+      var wrap = document.getElementById("pin-metrics");
+      if (p.status !== "published") {
+        card.hidden = true;
+        return;
+      }
+      card.hidden = false;
+      wrap.innerHTML = "";
+      wrap.appendChild(UI.el("p", { class: "hint", text: "Carregando métricas..." }));
+      UI.api("/api/analytics/pin/" + p.id + "?days=30").then(function (r) {
+        wrap.innerHTML = "";
+        if (r.status !== 200 || !r.data.available) {
+          wrap.appendChild(UI.el("p", { class: "hint", text: (r.data && r.data.reason) || UI.errorMessage(r) }));
+          return;
+        }
+        var m = r.data.metrics;
+        var tiles = [["Impressões", m.impressions], ["Salvamentos", m.saves], ["Cliques no pin", m.pin_clicks], ["Cliques no link", m.outbound_clicks]];
+        if (r.data.kind === "video") tiles.push(["Visualizações", m.video_views || 0], ["Viram até o fim", m.video_95 || 0]);
+        var grid = UI.el("div", { class: "stats stats-compact" });
+        tiles.forEach(function (t) {
+          grid.appendChild(UI.el("div", { class: "stat" }, [UI.el("span", { class: "stat-label", text: t[0] }), UI.el("strong", { class: "stat-value", text: fmtN.format(Math.round(t[1] || 0)) })]));
+        });
+        wrap.appendChild(grid);
+        var note = r.data.pending ? "Ainda sem dados da Pinterest." : r.data.error ? r.data.error : r.data.fetched_at ? "Dados de " + UI.formatRelative(r.data.fetched_at) + "." : "";
+        if (r.data.data_status === "PROCESSING") note += " A Pinterest ainda está processando os últimos dias.";
+        if (note) wrap.appendChild(UI.el("p", { class: "hint", text: note }));
+      });
+    }
+
     function load() {
       UI.api("/api/pins/" + encodeURIComponent(pinId)).then(function (r) {
         if (r.status === 404) {
@@ -161,6 +192,7 @@
         renderHead(pin);
         renderEvents(r.data.events);
         setupForm(pin);
+        renderMetrics(pin);
       });
     }
 

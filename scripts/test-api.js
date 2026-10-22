@@ -252,6 +252,47 @@ async function main() {
   check("pin adiado continua programado com aviso", r.data.pin.status === "scheduled" && /Limite diário/.test(r.data.pin.error_message || ""));
   r = await call("POST", "/api/pins/" + pin4 + "/cancel", { body: {}, cookie });
 
+  console.log("\nAnálises (métricas da Pinterest)");
+  const callsBefore = fake.state.analyticsCalls || 0;
+  r = await call("GET", "/api/analytics?days=30", { cookie });
+  check("visão geral com pins publicados", r.status === 200 && r.data.period === 30 && r.data.pins.length === 3, r.text.slice(0, 300));
+  check("só pins publicados entram (programados/cancelados ficam de fora)", r.data.pins.every((x) => x.metrics && typeof x.metrics.impressions === "number"));
+  check("totais somam os pins", r.data.totals.impressions === r.data.pins.reduce((n, x) => n + x.metrics.impressions, 0) && r.data.totals.impressions > 0);
+  check("série diária cobre o período", r.data.daily.length === 30 && r.data.daily.some((d) => d.impressions > 0));
+  check("vídeo traz visualizações; imagem não", r.data.pins.some((x) => x.kind === "video" && x.metrics.video_views > 0) && r.data.pins.some((x) => x.kind === "image" && x.metrics.video_views === null));
+  check("métricas da conta (perfil inteiro)", r.data.accounts.length === 1 && r.data.accounts[0].metrics && r.data.accounts[0].metrics.impressions > 0 && r.data.accounts[0].pins_published === 3);
+  const callsFirst = (fake.state.analyticsCalls || 0) - callsBefore;
+  check("buscou na Pinterest uma vez por pin + uma por conta", callsFirst === 4, String(callsFirst));
+  r = await call("GET", "/api/analytics?days=30", { cookie });
+  check("segunda abertura usa o cache (zero chamadas)", (fake.state.analyticsCalls || 0) - callsBefore === 4 && r.data.pending === 0);
+  r = await call("GET", "/api/analytics?days=7&account=" + accId, { cookie });
+  check("período de 7 dias e filtro por conta", r.status === 200 && r.data.period === 7 && r.data.daily.length === 7 && r.data.pins.length === 3);
+  r = await call("GET", "/api/analytics?days=30&account=naoexiste", { cookie });
+  check("conta de outro usuário/inexistente -> 404", r.status === 404);
+  r = await call("GET", "/api/analytics/pin/" + pinV + "?days=30", { cookie });
+  check("métricas de um pin de vídeo", r.status === 200 && r.data.available === true && r.data.kind === "video" && r.data.daily.length === 30);
+  r = await call("GET", "/api/analytics/pin/" + pinLimit + "?days=30", { cookie });
+  check("pin não publicado -> sem métricas, com explicação", r.status === 200 && r.data.available === false);
+  r = await call("POST", "/api/analytics/refresh", { body: { days: 30 }, cookie });
+  check("atualização manual", r.status === 200 && r.data.pins.length === 3);
+  r = await call("POST", "/api/analytics/refresh", { body: { days: 30 }, cookie });
+  check("atualização manual repetida -> espera (429)", r.status === 429 && r.data.error.code === "cooldown");
+  fake.state.analyticsRateLimit = true;
+  process.env.PF_ANALYTICS_CACHE_MS = "0";
+  r = await call("GET", "/api/analytics?days=90", { cookie });
+  check("limite da Pinterest (429) não derruba a tela", r.status === 200 && r.data.rate_limited === true);
+  fake.state.analyticsRateLimit = false;
+  delete process.env.PF_ANALYTICS_CACHE_MS;
+
+  // Outro usuário não vê nada do primeiro
+  r = await call("POST", "/api/auth/register", { body: { email: "joao@exemplo.com", password: "outra frase bem comprida 2026", acceptTerms: true } });
+  const cookieJoao = cookieFrom(r.setCookie, "pf_session");
+  r = await call("GET", "/api/analytics?days=30", { cookie: cookieJoao });
+  check("outro usuário vê zero pins e zero contas", r.status === 200 && r.data.pins.length === 0 && r.data.accounts.length === 0 && r.data.totals.impressions === 0);
+  r = await call("GET", "/api/analytics/pin/" + pinV, { cookie: cookieJoao });
+  check("outro usuário não acessa o pin do primeiro", r.status === 404);
+  r = await call("POST", "/api/auth/delete-account", { body: { password: "outra frase bem comprida 2026", confirm: "EXCLUIR" }, cookie: cookieJoao });
+
   console.log("\nDuplicar, apagar, dashboard e histórico");
   r = await call("POST", "/api/pins/" + pinA + "/duplicate", { body: { scheduled_at: future }, cookie });
   check("duplicar pin publicado como programado", r.status === 201 && r.data.pin.status === "scheduled" && r.data.pin.title === "Título novo");

@@ -14,5 +14,6 @@ require("./_lib/routes/accounts");
 require("./_lib/routes/media");
 require("./_lib/routes/pins");
 require("./_lib/routes/misc");
+require("./_lib/routes/analytics");
 
 module.exports = (req, res) => router.dispatch(req, res);

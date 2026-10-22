@@ -173,6 +173,16 @@ const api = {
   updatePin: (token, id, body) => request(token, "PATCH", "/pins/" + encodeURIComponent(id), { body }),
   deletePin: (token, id) => request(token, "DELETE", "/pins/" + encodeURIComponent(id)),
 
+  // Análises (métricas). Datas em YYYY-MM-DD (UTC); no máximo 90 dias para trás.
+  pinAnalytics: (token, pinId, q) =>
+    request(token, "GET", "/pins/" + encodeURIComponent(pinId) + "/analytics", {
+      query: { start_date: q.start, end_date: q.end, metric_types: q.metricTypes.join(","), app_types: "ALL", split_field: "NO_SPLIT" },
+    }),
+  accountAnalytics: (token, q) =>
+    request(token, "GET", "/user_account/analytics", {
+      query: { start_date: q.start, end_date: q.end, metric_types: q.metricTypes.join(","), app_types: "ALL", split_field: "NO_SPLIT" },
+    }),
+
   registerMedia: (token) => request(token, "POST", "/media", { body: { media_type: "video" } }),
   getMedia: (token, id) => request(token, "GET", "/media/" + encodeURIComponent(id)),
 

@@ -40,6 +40,8 @@ const TABLES = new Set([
   "pins",
   "activity",
   "settings",
+  "pin_metrics",
+  "account_metrics",
 ]);
 
 const OPERATORS = new Set(["ne", "in", "lt", "lte", "gt", "gte", "notNull", "like"]);

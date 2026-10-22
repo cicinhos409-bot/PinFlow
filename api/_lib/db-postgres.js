@@ -42,7 +42,8 @@ function getPool() {
 
 // Migrações numeradas: a 1 é o schema.sql; as próximas entram aqui como SQL idempotente.
 const MIGRATIONS = [
-  { version: 1, sql: () => require("./schema") },
+  { version: 1, sql: () => require("./schema").BASE },
+  { version: 2, sql: () => require("./schema").ANALYTICS },
 ];
 
 async function migrate() {
@@ -143,8 +144,9 @@ function buildOrder(orderBy) {
   );
 }
 
+// Objetos e listas viram JSON (colunas jsonb). Datas e Buffers passam direto.
 function prepareValue(v) {
-  if (v !== null && typeof v === "object" && !(v instanceof Date) && !Array.isArray(v)) return JSON.stringify(v);
+  if (v !== null && typeof v === "object" && !(v instanceof Date) && !Buffer.isBuffer(v)) return JSON.stringify(v);
   return v;
 }
 

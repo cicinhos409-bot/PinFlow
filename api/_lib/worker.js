@@ -14,6 +14,7 @@ const pinterest = require("./pinterest");
 const storage = require("./storage");
 const activity = require("./activity");
 const mailer = require("./mailer");
+const analytics = require("./analytics");
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
@@ -213,9 +214,14 @@ async function runWorker(db, opts) {
  */
 async function runMaintenance(db) {
   const now = Date.now();
-  const out = { refreshed: 0, needs_reconnect: 0, warned: 0, cleaned: 0 };
+  const out = { refreshed: 0, needs_reconnect: 0, warned: 0, cleaned: 0, metrics: 0 };
   out.cleaned = await db.cleanupAttempts(new Date(now - 2 * 24 * 60 * 60 * 1000).toISOString());
   if (!pinterest.isConfigured()) return out;
+  try {
+    out.metrics = await analytics.refreshRecent(db, config.ANALYTICS_DAILY_BUDGET);
+  } catch (e) {
+    console.error("[worker] métricas:", e.message);
+  }
 
   const accounts = await db.findMany("pinterest_accounts", { deleted_at: null, status: "active" }, { limit: 500 });
   for (const acc of accounts) {

@@ -41,6 +41,7 @@ Padrão `/app/<página>/<id da conta>[/<item>]`. O id é público, aleatório e 
 | Contas / Conta | `/app/contas/<id>`, `/app/contas/<id>/<conta>` |
 | Pins / Novo / Detalhe | `/app/pins/<id>`, `/app/pins/<id>/novo`, `/app/pins/<id>/<pin>` |
 | Histórico | `/app/historico/<id>` |
+| Análises | `/app/analises/<id>` |
 | Configurações | `/app/configuracoes/<id>` |
 
 ## API (JSON, mesma origem, sessão por cookie)
@@ -59,6 +60,7 @@ Padrão `/app/<página>/<id da conta>[/<item>]`. O id é público, aleatório e 
 | `POST /api/media/upload` (token) · `POST /api/media` · `GET /api/media` · `DELETE /api/media/:id` | Mídia |
 | `GET/POST /api/pins` · `GET/PATCH/DELETE /api/pins/:id` · `POST /api/pins/:id/{cancel,retry,publish-now,duplicate}` | Pins |
 | `GET /api/dashboard` · `GET /api/activity` | Resumo e histórico |
+| `GET /api/analytics?days=&account=` · `POST /api/analytics/refresh` · `GET /api/analytics/pin/:id` | Análises (métricas da Pinterest com cache de 6 h e orçamento de chamadas) |
 | `POST /api/worker/run` | Processa a fila (público, limitado; só publica o que já venceu) |
 | `GET /api/cron/daily` · `GET /api/cron/queue` | Cron com `CRON_SECRET` |
 
@@ -73,6 +75,12 @@ Erros vêm como `{ ok: false, error: { code, message, field? } }` com mensagens 
 5. Proteções contra spam (a Pinterest pune o app inteiro): limite diário por conta (padrão 25, máximo 100), intervalo mínimo entre pins da mesma conta, no máximo 20 contas por usuário.
 
 **Quem dispara o worker:** o navegador de quem está com a plataforma aberta (a cada 60 s), o cron diário da Vercel e, se quiser pontualidade de minuto, um agendador externo chamando `GET /api/cron/queue?key=CRON_SECRET` a cada minuto (ex.: cron-job.org). No plano Hobby da Vercel o cron roda só uma vez por dia (±59 min).
+
+## Análises (métricas)
+
+- Por pin: `GET /pins/{id}/analytics` (impressões, salvamentos, cliques, cliques no link, comentários, reações; vídeos: views MRC, 10 s, 95%, tempo total e médio). Por conta: `GET /user_account/analytics`.
+- Cache em `pin_metrics`/`account_metrics` por período (7/14/30/90 dias), válido por 6 h. Cada abertura da tela busca no máximo 25 itens novos/velhos na Pinterest (Trial: 1.000 chamadas/dia para o app inteiro); o botão "Atualizar dados" tem espera de 30 min por usuário; a manutenção diária renova até 200 pins recentes.
+- A Pinterest consolida os números em 1–2 dias (`data_status = PROCESSING`), e só dá 90 dias para trás.
 
 ## Tokens da Pinterest
 

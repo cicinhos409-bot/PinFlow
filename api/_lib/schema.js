@@ -6,7 +6,7 @@
  * Fica em JS (e não .sql) para o empacotador da Vercel incluir o arquivo na função.
  */
 
-module.exports = `
+const BASE = `
 -- Esquema do banco (Postgres). Aplicado automaticamente pela plataforma na primeira
 -- requisição (api/_lib/db-postgres.js). Todas as instruções são idempotentes.
 -- Datas em timestamptz; ids gerados pela aplicação (texto).
@@ -180,3 +180,40 @@ CREATE TABLE IF NOT EXISTS settings (
   updated_at timestamptz
 );
 `;
+
+// Migração 2: análises (métricas da Pinterest em cache, por pin e por conta)
+const ANALYTICS = `
+CREATE TABLE IF NOT EXISTS pin_metrics (
+  id          text PRIMARY KEY,
+  user_id     text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  account_id  text NOT NULL REFERENCES pinterest_accounts(id) ON DELETE CASCADE,
+  pin_id      text NOT NULL REFERENCES pins(id) ON DELETE CASCADE,
+  period      integer NOT NULL,
+  start_date  text NOT NULL,
+  end_date    text NOT NULL,
+  summary     jsonb,
+  daily       jsonb,
+  lifetime    jsonb,
+  data_status text,
+  error       text,
+  fetched_at  timestamptz NOT NULL,
+  UNIQUE (pin_id, period)
+);
+CREATE INDEX IF NOT EXISTS pin_metrics_user_idx ON pin_metrics (user_id, period, fetched_at);
+
+CREATE TABLE IF NOT EXISTS account_metrics (
+  id          text PRIMARY KEY,
+  user_id     text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  account_id  text NOT NULL REFERENCES pinterest_accounts(id) ON DELETE CASCADE,
+  period      integer NOT NULL,
+  start_date  text NOT NULL,
+  end_date    text NOT NULL,
+  summary     jsonb,
+  daily       jsonb,
+  error       text,
+  fetched_at  timestamptz NOT NULL,
+  UNIQUE (account_id, period)
+);
+`;
+
+module.exports = { BASE, ANALYTICS };

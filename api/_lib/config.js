@@ -66,6 +66,13 @@ module.exports = {
   VIDEO_MAX_BYTES: 200 * 1024 * 1024,
   MEDIA_PER_USER_MAX: 2000,
 
+  /* ---------- Análises (métricas da Pinterest) ---------- */
+  ANALYTICS_PERIODS: [7, 14, 30, 90],
+  get ANALYTICS_CACHE_MS() { return process.env.PF_ANALYTICS_CACHE_MS !== undefined ? Number(process.env.PF_ANALYTICS_CACHE_MS) : 6 * 60 * 60 * 1000; }, // dados valem 6 h
+  ANALYTICS_REFRESH_BUDGET: 25, // chamadas à Pinterest por carregamento da tela (Trial: 1.000/dia por app)
+  ANALYTICS_MANUAL_COOLDOWN_MS: Number(process.env.PF_ANALYTICS_COOLDOWN_MS || 30 * 60 * 1000),
+  ANALYTICS_DAILY_BUDGET: 200, // pins atualizados pela manutenção diária
+
   /* ---------- Fila de publicação ---------- */
   WORKER_BATCH: 10,
   WORKER_MIN_INTERVAL_MS: Number(process.env.PF_WORKER_MIN_INTERVAL_MS || 20 * 1000), // intervalo mínimo entre execuções disparadas pelo navegador

@@ -22,7 +22,7 @@ async function main() {
   const { PGLiteSocketServer } = require("@electric-sql/pglite-socket");
   const db = await PGlite.create();
   const port = 54000 + Math.floor(Math.random() * 1000);
-  const server = new PGLiteSocketServer({ db, port, host: "127.0.0.1", maxConnections: 20 });
+  const server = new PGLiteSocketServer({ db, port, host: "127.0.0.1", maxConnections: 200 });
   await server.start();
   const url = "postgres://postgres:postgres@127.0.0.1:" + port + "/postgres";
   console.log("Postgres embutido em " + url + "\n");

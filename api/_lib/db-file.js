@@ -120,6 +120,8 @@ const UNIQUE = {
   media: [["public_id"]],
   pins: [["public_id"]],
   settings: [["key"]],
+  pin_metrics: [["pin_id", "period"]],
+  account_metrics: [["account_id", "period"]],
 };
 
 function checkUnique(d, table, row, ignoreId) {
@@ -277,7 +279,7 @@ module.exports = {
 // Simula o ON DELETE CASCADE do Postgres.
 function cascadeUsers(d) {
   const ids = new Set(d.users.map((u) => u.id));
-  for (const t of ["sessions", "auth_tokens", "pinterest_accounts", "boards", "media", "pins", "activity"]) {
+  for (const t of ["sessions", "auth_tokens", "pinterest_accounts", "boards", "media", "pins", "activity", "pin_metrics", "account_metrics"]) {
     d[t] = d[t].filter((r) => ids.has(r.user_id));
   }
 }
@@ -285,4 +287,7 @@ function cascadeAccounts(d) {
   const ids = new Set(d.pinterest_accounts.map((a) => a.id));
   d.boards = d.boards.filter((b) => ids.has(b.account_id));
   d.pins = d.pins.filter((p) => ids.has(p.account_id));
+  d.account_metrics = d.account_metrics.filter((m) => ids.has(m.account_id));
+  const pinIds = new Set(d.pins.map((p) => p.id));
+  d.pin_metrics = d.pin_metrics.filter((m) => pinIds.has(m.pin_id));
 }

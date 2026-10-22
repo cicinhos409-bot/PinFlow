@@ -9,7 +9,8 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
-const V = process.env.ASSET_VERSION || new Date().toISOString().slice(0, 10).replace(/-/g, "") + "c";
+// Versão dos arquivos estáticos: muda a cada geração, para o navegador não usar CSS/JS antigos.
+const V = process.env.ASSET_VERSION || Date.now().toString(36);
 
 const LOGO = (href, label) => `<a class="logo" href="${href}" ${label ? `aria-label="${label}"` : ""}${href.startsWith("/app/") ? ' data-app-link="dashboard"' : ""}>
           <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
@@ -26,6 +27,7 @@ const ICONS = {
   pins: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l3 6 6 1-4.5 4 1.5 7-6-3-6 3 1.5-7L3 10l6-1z"/></svg>',
   novo: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
   historico: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  analises: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>',
   configuracoes: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
   sair: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M13 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>',
   menu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
@@ -36,6 +38,7 @@ const NAV = [
   ["contas", "Contas do Pinterest", "contas"],
   ["pins", "Pins", "pins"],
   ["pins:novo", "Novo pin", "novo"],
+  ["analises", "Análises", "analises"],
   ["historico", "Histórico", "historico"],
   ["configuracoes", "Configurações", "configuracoes"],
 ];
@@ -454,6 +457,14 @@ pages["app/pin.html"] = appShell({
           </form>
         </section>
 
+        <section class="dash-card dash-card-wide" id="metrics-card" aria-labelledby="metricas-titulo" hidden>
+          <div class="card-head">
+            <h2 id="metricas-titulo">Resultados (30 dias)</h2>
+            <a href="/app/analises" data-app-link="analises">Ver análises</a>
+          </div>
+          <div id="pin-metrics" class="card-body"></div>
+        </section>
+
         <section class="dash-card dash-card-wide" aria-labelledby="eventos-titulo">
           <h2 id="eventos-titulo">Histórico deste pin</h2>
           <div id="pin-events" class="card-body"></div>
@@ -490,6 +501,60 @@ pages["app/pins.html"] = appShell({
       <div id="pins-list"></div>
       <div id="pins-calendar" class="calendar" hidden></div>
       <p style="margin-top:16px"><button class="btn btn-ghost" type="button" id="load-more" hidden>Carregar mais</button></p>`,
+});
+
+pages["app/analises.html"] = appShell({
+  page: "analises",
+  title: "Análises",
+  eyebrow: "Análises",
+  heading: "Análises",
+  intro: "Impressões, salvamentos, cliques e visualizações dos pins que você publicou pela plataforma. Só você vê os seus.",
+  actions: '<button class="btn btn-ghost" type="button" id="refresh-btn">Atualizar dados</button>',
+  scripts: ["pages/analises"],
+  body: `
+      <div class="toolbar">
+        <div class="chips" role="group" aria-label="Período">
+          <button type="button" class="chip" data-days="7" aria-pressed="false">7 dias</button>
+          <button type="button" class="chip" data-days="14" aria-pressed="false">14 dias</button>
+          <button type="button" class="chip" data-days="30" aria-pressed="true">30 dias</button>
+          <button type="button" class="chip" data-days="90" aria-pressed="false">90 dias</button>
+        </div>
+        <div class="toolbar-right">
+          <select id="filter-account" aria-label="Conta"><option value="">Todas as contas</option></select>
+          <div class="segmented" role="group" aria-label="Tipo">
+            <button type="button" data-kind="" aria-pressed="true">Todos</button>
+            <button type="button" data-kind="image" aria-pressed="false">Imagens</button>
+            <button type="button" data-kind="video" aria-pressed="false">Vídeos</button>
+          </div>
+        </div>
+      </div>
+      <p class="hint" id="updated-at"></p>
+      <p class="notice is-warn" id="analytics-notice" hidden></p>
+
+      <section class="stats" id="stats" aria-label="Totais do período"></section>
+
+      <div class="dash-grid dash-grid-main">
+        <section class="dash-card dash-card-wide" id="chart-card" aria-labelledby="grafico-titulo">
+          <h2 id="grafico-titulo">Por dia</h2>
+          <div id="chart" class="chart card-body"></div>
+        </section>
+
+        <section class="dash-card" id="accounts-card" aria-labelledby="contas-titulo" hidden>
+          <h2 id="contas-titulo">Por conta (perfil inteiro na Pinterest)</h2>
+          <div id="accounts" class="card-body accounts-metrics"></div>
+        </section>
+
+        <section class="dash-card" id="top-card" aria-labelledby="top-titulo" hidden>
+          <h2 id="top-titulo">Mais vistos</h2>
+          <div id="top-pins" class="card-body"></div>
+          <div id="top-videos-block" class="card-body" hidden>
+            <h3 class="sub-title">Vídeos mais assistidos</h3>
+            <div id="top-videos"></div>
+          </div>
+        </section>
+
+        <section class="dash-card dash-card-wide" id="table-card" aria-label="Todos os pins"></section>
+      </div>`,
 });
 
 pages["app/historico.html"] = appShell({

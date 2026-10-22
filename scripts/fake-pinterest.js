@@ -108,8 +108,43 @@ function createFakePinterest() {
     }
 
     // Daqui para baixo tudo exige um token válido
+    let m;
     const token = bearer(req);
     if (!token || !state.tokens.has(token)) return json(res, 401, { code: 2, message: "Authentication failed." });
+
+    // Análises: números determinísticos (dependem do id e da data) para os testes conferirem somas.
+    function dailyFor(seed, start, end, metricTypes) {
+      const days = [];
+      for (let t = Date.parse(start); t <= Date.parse(end); t += 86400000) {
+        const date = new Date(t).toISOString().slice(0, 10);
+        const base = (seed + Number(date.replace(/-/g, "")) % 97) % 50;
+        const metrics = {};
+        metricTypes.forEach((m, i) => { metrics[m] = m.endsWith("_RATE") ? 0.1 : base + i; });
+        days.push({ date, data_status: "READY", metrics });
+      }
+      return days;
+    }
+    function summaryOf(days) {
+      const s = {};
+      days.forEach((d) => Object.keys(d.metrics).forEach((k) => { s[k] = (s[k] || 0) + d.metrics[k]; }));
+      return s;
+    }
+    m = /^\/v5\/pins\/(\d+)\/analytics$/.exec(p);
+    if (m && req.method === "GET") {
+      const pin = state.pins.find((x) => x.id === m[1]);
+      if (!pin) return json(res, 404, { code: 4, message: "Pin not found" });
+      state.analyticsCalls = (state.analyticsCalls || 0) + 1;
+      if (state.analyticsRateLimit) return json(res, 429, { code: 8, message: "Rate limit exceeded" });
+      const types = String(url.searchParams.get("metric_types") || "IMPRESSION").split(",");
+      const days = dailyFor(Number(m[1]), url.searchParams.get("start_date"), url.searchParams.get("end_date"), types);
+      return json(res, 200, { all: { daily_metrics: days, summary_metrics: summaryOf(days), lifetime_metrics: { TOTAL_COMMENTS: 2, TOTAL_REACTIONS: 5 } } });
+    }
+    if (p === "/v5/user_account/analytics" && req.method === "GET") {
+      state.analyticsCalls = (state.analyticsCalls || 0) + 1;
+      const types = String(url.searchParams.get("metric_types") || "IMPRESSION").split(",");
+      const days = dailyFor(4242, url.searchParams.get("start_date"), url.searchParams.get("end_date"), types);
+      return json(res, 200, { all: { daily_metrics: days, summary_metrics: summaryOf(days) } });
+    }
 
     if (p === "/v5/user_account" && req.method === "GET") {
       return json(res, 200, { id: "4242", username: "maria_pins", account_type: "BUSINESS", profile_image: "https://i.pinimg.com/fake.jpg", business_name: "Maria Pins", website_url: "https://exemplo.com" });
@@ -124,7 +159,7 @@ function createFakePinterest() {
       state.boards.push(board);
       return json(res, 201, board);
     }
-    let m = /^\/v5\/boards\/(\d+)$/.exec(p);
+    m = /^\/v5\/boards\/(\d+)$/.exec(p);
     if (m && req.method === "PATCH") {
       const board = state.boards.find((b) => b.id === m[1]);
       if (!board) return json(res, 404, { code: 4, message: "Board not found" });

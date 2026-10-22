@@ -21,6 +21,8 @@ Fontes: developers.pinterest.com (Authentication and scopes, Access tiers, Conte
 | `PATCH /pins/{id}` | Editar título, descrição, link, alt_text, pasta de pin já publicado |
 | `DELETE /pins/{id}` | Apagar na Pinterest (opcional, pela janela de confirmação) |
 | `POST /media` → upload em `upload_url` → `GET /media/{id}` | Vídeo em 4 passos; status: `registered`, `processing`, `succeeded`, `failed` |
+| `GET /pins/{id}/analytics` | Métricas do pin (IMPRESSION, SAVE, PIN_CLICK, OUTBOUND_CLICK, TOTAL_COMMENTS, TOTAL_REACTIONS; vídeo: VIDEO_MRC_VIEW, VIDEO_10S_VIEW, QUARTILE_95_PERCENT_VIEW, VIDEO_V50_WATCH_TIME, VIDEO_START, VIDEO_AVG_WATCH_TIME). Janela máxima: 90 dias para trás |
+| `GET /user_account/analytics` | Métricas do perfil (IMPRESSION, ENGAGEMENT, SAVE, PIN_CLICK, OUTBOUND_CLICK) |
 
 Limites dos campos (OpenAPI): título 100, descrição 800, alt_text 500, link 2048. Vídeo aceito: `.mp4`, `.mov`, `.m4v`.
 
