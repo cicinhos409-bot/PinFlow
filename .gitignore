@@ -1,0 +1,19 @@
+# Dependências
+node_modules/
+
+# Segredos e ambiente: NUNCA subir para o GitHub
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel/
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log

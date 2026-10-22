@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agende pins em várias contas do Pinterest | Pinflow</title>
+  <meta name="description" content="Conecte suas contas do Pinterest, programe imagens e vídeos uma vez e deixe a plataforma publicar por você. Login oficial, sem compartilhar senha.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Agende pins em várias contas do Pinterest">
+  <meta property="og:description" content="Programe seus pins uma vez e deixe a plataforma publicar por você, com login oficial e sem compartilhar senha.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;700;800;900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header" id="topo">
+    <div class="container nav">
+      <a class="logo" href="/" aria-label="Página inicial">
+        <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="9" fill="#fe9a00"/>
+          <path d="M9 22V10h7a4.5 4.5 0 0 1 0 9h-3.5" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="23" cy="22" r="2.2" fill="#000000"/>
+        </svg>
+        <span data-brand>Pinflow</span>
+      </a>
+
+      <ul class="nav-links" id="menu">
+        <li><a href="#como-funciona">Como funciona</a></li>
+        <li><a href="#recursos">Recursos</a></li>
+        <li><a href="#seguranca">Segurança</a></li>
+        <li><a href="#planos">Planos</a></li>
+        <li><a href="#perguntas">Perguntas</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a class="btn btn-primary btn-small" href="#lista">Entrar na lista</a>
+        <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1>Seus pins no piloto automático. <span class="grad">Em todas as suas contas.</span></h1>
+          <p class="lead">Conecte suas contas do Pinterest, programe imagens e vídeos uma vez e deixe a plataforma publicar por você. Sem dar sua senha.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#lista">Entrar na lista de espera</a>
+            <a class="btn btn-ghost" href="#como-funciona">Ver como funciona</a>
+          </div>
+          <ul class="hero-points">
+            <li>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Conexão pelo login oficial do Pinterest
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Imagens e vídeos, com capa
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Várias contas em um painel só
+            </li>
+          </ul>
+        </div>
+
+        <div class="board-wrap">
+          <div class="board" role="img" aria-label="Exemplo do painel: pins agendados em três contas conectadas">
+            <div class="board-head">
+              <span>Fila desta semana</span>
+              <small>5 pins programados</small>
+            </div>
+
+            <div class="pins">
+              <figure class="pin" style="--i:0; --tilt:-1.4deg; --acc:#fe9a00">
+                <div class="pin-art art-a" style="aspect-ratio: 4 / 5"></div>
+                <span class="stamp">Hoje 18:30</span>
+                <figcaption>
+                  <span class="pin-title">Decoração pequena para sala</span>
+                  <span class="pin-account">@casa.achados</span>
+                </figcaption>
+              </figure>
+
+              <figure class="pin" style="--i:1; --tilt:1.6deg; --acc:#ffffff">
+                <div class="pin-art art-b is-video" style="aspect-ratio: 3 / 4"></div>
+                <span class="stamp is-done">Publicado</span>
+                <figcaption>
+                  <span class="pin-title">3 ideias de organização</span>
+                  <span class="pin-account">@cantinho.pratico</span>
+                </figcaption>
+              </figure>
+
+              <figure class="pin" style="--i:2; --tilt:1deg; --acc:#ffc820">
+                <div class="pin-art art-c" style="aspect-ratio: 1 / 1"></div>
+                <span class="stamp">Amanhã 09:00</span>
+                <figcaption>
+                  <span class="pin-title">Cozinha em tons claros</span>
+                  <span class="pin-account">@casa.achados</span>
+                </figcaption>
+              </figure>
+
+              <figure class="pin" style="--i:3; --tilt:-1.2deg; --acc:#ff7b00">
+                <div class="pin-art art-d is-video" style="aspect-ratio: 4 / 6"></div>
+                <span class="stamp">Sex 12:15</span>
+                <figcaption>
+                  <span class="pin-title">Antes e depois do quarto</span>
+                  <span class="pin-account">@reforma.facil</span>
+                </figcaption>
+              </figure>
+            </div>
+
+            <div class="board-accounts" aria-hidden="true">
+              <span class="account-chip" style="--acc:#fe9a00"><i></i>@casa.achados</span>
+              <span class="account-chip" style="--acc:#ffffff"><i></i>@cantinho.pratico</span>
+              <span class="account-chip" style="--acc:#ff7b00"><i></i>@reforma.facil</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Faixa de confiança -->
+    <section class="trust" aria-label="Pontos de confiança">
+      <div class="container">
+        <ul>
+          <li>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Conexão oficial pelo login do Pinterest
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Você nunca compartilha sua senha
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Desconecte quando quiser
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Problema -->
+    <section class="section" id="problema">
+      <div class="container">
+        <h2>Postar pin por pin não escala.</h2>
+        <p class="section-intro">Quem trabalha com Pinterest sabe: o resultado vem da constância, e a constância come o seu dia.</p>
+
+        <div class="pains">
+          <div class="pain">
+            <h3>Constância dá trabalho</h3>
+            <p>Um dia você posta cinco pins, na semana seguinte esquece. O Pinterest recompensa quem aparece sempre.</p>
+          </div>
+          <div class="pain">
+            <h3>Cada conta, uma aba</h3>
+            <p>Entrar e sair de conta em conta, subir o mesmo tipo de pin várias vezes e ainda lembrar de qual board é qual.</p>
+          </div>
+          <div class="pain">
+            <h3>Horário certo, hora errada</h3>
+            <p>O melhor horário quase nunca coincide com o seu. Quem programa com antecedência deixa de depender disso.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Como funciona -->
+    <section class="section" id="como-funciona">
+      <div class="container">
+        <h2>Três passos e a fila anda sozinha.</h2>
+
+        <ol class="steps">
+          <li>
+            <div>
+              <h3>Conecte suas contas</h3>
+              <p>Clique em conectar, entre no Pinterest e autorize. Você pode ligar quantas contas o seu plano permitir.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Programe seus pins</h3>
+              <p>Suba imagens ou vídeos, escreva título e descrição, coloque o link de destino e escolha a conta, o board e o horário.</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Acompanhe o resultado</h3>
+              <p>Veja o que já foi publicado, o que está na fila e como seus pins estão se saindo, tudo no mesmo painel.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Recursos -->
+    <section class="section" id="recursos">
+      <div class="container">
+        <h2>O que você leva no painel.</h2>
+
+        <dl class="features">
+          <div class="feature">
+            <dt>Várias contas do Pinterest</dt>
+            <dd>Alterne entre elas sem sair da plataforma. Cada conta tem seus boards, sua fila e seus limites.</dd>
+          </div>
+          <div class="feature">
+            <dt>Imagens e vídeos</dt>
+            <dd>Pins de imagem e de vídeo, com escolha da capa e do link de destino.</dd>
+          </div>
+          <div class="feature">
+            <dt>Board e seção por pin</dt>
+            <dd>Escolha onde cada pin vai ser salvo, inclusive nas seções dentro do board.</dd>
+          </div>
+          <div class="feature">
+            <dt>Fila e calendário</dt>
+            <dd>Veja a semana inteira de uma vez e arraste pins para outro horário.</dd>
+          </div>
+          <div class="feature">
+            <dt>Programação em lote</dt>
+            <dd>Suba vários pins de uma vez e distribua nos dias e horários que você escolher.</dd>
+          </div>
+          <div class="feature">
+            <dt>Intervalos que protegem a conta</dt>
+            <dd>A plataforma espaça as publicações e evita conteúdo repetido, para você seguir as regras do Pinterest.</dd>
+          </div>
+          <div class="feature">
+            <dt>Métricas dos pins</dt>
+            <dd>Acompanhe o desempenho básico de cada pin e descubra o que vale repetir.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Segurança -->
+    <section class="section security" id="seguranca">
+      <div class="container">
+        <h2>Você autoriza no Pinterest. Nós nunca vemos sua senha.</h2>
+        <p class="section-intro">A conexão usa o login oficial do Pinterest. Você decide o que a plataforma pode fazer e pode encerrar o acesso quando quiser.</p>
+
+        <ul class="security-list">
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+            <div>
+              <strong>Login oficial</strong>
+              <span>Quem pede a sua autorização é o próprio Pinterest. A plataforma recebe apenas o acesso que você liberar.</span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <div>
+              <strong>Acessos guardados com proteção</strong>
+              <span>As chaves de acesso às suas contas ficam armazenadas com criptografia.</span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <div>
+              <strong>Limites que cuidam da sua conta</strong>
+              <span>Intervalos entre pins e limites diários seguem as regras do Pinterest contra spam.</span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h3M15 7h3a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-3M9 12h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <div>
+              <strong>Desconecte quando quiser</strong>
+              <span>Remova uma conta da plataforma a qualquer momento e o acesso dela é encerrado.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Planos -->
+    <section class="section" id="planos">
+      <div class="container">
+        <h2>Planos para cada tamanho de operação.</h2>
+        <p class="section-intro">Estamos fechando os valores. Entre na lista de espera para saber primeiro.</p>
+
+        <div class="plans">
+          <article class="plan">
+            <h3>Teste</h3>
+            <p class="plan-for">Para conhecer a plataforma</p>
+            <p class="plan-price">Em breve</p>
+            <ul>
+              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>1 conta do Pinterest</li>
+              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Poucos pins por semana</li>
+            </ul>
+          </article>
+
+          <article class="plan is-featured">
+            <h3>Pro</h3>
+            <p class="plan-for">Para criadores e afiliados</p>
+            <p class="plan-price">Em breve</p>
+            <ul>
+              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Algumas contas do Pinterest</li>
+              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mais pins por semana</li>
+            </ul>
+          </article>
+
+          <article class="plan">
+            <h3>Agência</h3>
+            <p class="plan-for">Para quem cuida de vários clientes</p>
+            <p class="plan-price">Em breve</p>
+            <ul>
+              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Muitas contas do Pinterest</li>
+              <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Equipe no mesmo painel</li>
+            </ul>
+          </article>
+        </div>
+
+        <p class="plans-note">Limites e valores de cada plano ainda podem mudar até o lançamento.</p>
+      </div>
+    </section>
+
+    <!-- Perguntas -->
+    <section class="section" id="perguntas">
+      <div class="container">
+        <h2>Perguntas frequentes</h2>
+
+        <div class="faq">
+          <details>
+            <summary>Preciso dar minha senha do Pinterest?</summary>
+            <p>Não. Você entra no próprio Pinterest e autoriza a conexão. A plataforma nunca pede nem vê a sua senha.</p>
+          </details>
+          <details>
+            <summary>Funciona com conta pessoal?</summary>
+            <p>O ideal é usar uma conta Business, que é gratuita no Pinterest. Contas pessoais podem ter limitações de acesso impostas pelo próprio Pinterest.</p>
+          </details>
+          <details>
+            <summary>Posso conectar várias contas?</summary>
+            <p>Sim. O número de contas depende do plano escolhido.</p>
+          </details>
+          <details>
+            <summary>Quantos pins posso publicar por dia?</summary>
+            <p>Existem limites e intervalos entre as publicações para proteger a sua conta contra spam. Os valores exatos de cada plano serão divulgados no lançamento.</p>
+          </details>
+          <details>
+            <summary>Posso desconectar uma conta depois?</summary>
+            <p>Sim, a qualquer momento. Ao desconectar, a plataforma perde o acesso àquela conta.</p>
+          </details>
+          <details>
+            <summary>A plataforma é oficial do Pinterest?</summary>
+            <p>Não. Ela é um serviço independente que usa a API oficial do Pinterest para publicar em seu nome, com a sua autorização.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de espera -->
+    <section class="waitlist" id="lista">
+      <div class="container">
+        <div class="waitlist-panel">
+          <div>
+            <h2>Pare de postar pin por pin.</h2>
+            <p class="section-intro">Deixe seu e-mail e avisamos quando abrirmos as primeiras vagas.</p>
+          </div>
+
+          <form class="form" id="waitlist-form" novalidate>
+            <div class="field">
+              <label for="email">Seu melhor e-mail</label>
+              <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="voce@exemplo.com" required>
+            </div>
+
+            <div class="field">
+              <label for="perfil">Como você usa o Pinterest?</label>
+              <select id="perfil" name="perfil" required>
+                <option value="">Escolha uma opção</option>
+                <option value="afiliado">Sou afiliado</option>
+                <option value="criador">Crio conteúdo</option>
+                <option value="loja">Tenho uma loja</option>
+                <option value="agencia">Cuido de contas de clientes</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="contas">Quantas contas do Pinterest você tem?</label>
+              <select id="contas" name="contas" required>
+                <option value="">Escolha uma opção</option>
+                <option value="1">1 conta</option>
+                <option value="2-5">2 a 5 contas</option>
+                <option value="6-20">6 a 20 contas</option>
+                <option value="20+">Mais de 20 contas</option>
+              </select>
+            </div>
+
+            <div class="hp" aria-hidden="true">
+              <label for="website">Não preencha este campo</label>
+              <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
+            <label class="check">
+              <input type="checkbox" name="consent" id="consent" required>
+              <span>Concordo em receber e-mails sobre o lançamento e li a <a href="/privacidade">Política de Privacidade</a>.</span>
+            </label>
+
+            <button class="btn btn-primary" type="submit">Entrar na lista de espera</button>
+            <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="logo" href="#topo"><span data-brand>Pinflow</span></a>
+        <p class="disclaimer" style="margin-top:12px">Pinterest é marca registrada de seus respectivos donos. Esta plataforma é um serviço independente e não é afiliada ao Pinterest.</p>
+        <p class="disclaimer" style="margin-top:8px">© <span data-year>2026</span> <span data-brand>Pinflow</span>. Todos os direitos reservados.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="/privacidade">Política de Privacidade</a></li>
+        <li><a href="/termos">Termos de Uso</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "plataforma-pinterest",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plataforma SaaS para agendar pins em várias contas do Pinterest (landing page inicial)",
+  "scripts": {
+    "dev": "vercel dev",
+    "check": "node --check js/config.js && node --check js/main.js"
+  }
+}
