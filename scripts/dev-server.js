@@ -7,7 +7,7 @@
  *   npm run dev:local        ->  http://localhost:3000
  */
 
-process.env.AUTH_STORE = process.env.AUTH_STORE || "file";
+process.env.AUTH_STORE = process.env.AUTH_STORE || "file"; // AUTH_STORE=none simula o site sem banco
 
 const http = require("http");
 const fs = require("fs");

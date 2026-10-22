@@ -233,23 +233,44 @@
     api("/api/auth/me").then(function (result) {
       if (result.status === 200 && result.data && result.data.ok) {
         window.location.replace(appUrl("dashboard", result.data.user.id));
+      } else if (result.status === 503 && result.data && result.data.error && result.data.error.code === "not_configured") {
+        // Sem banco: as telas estão abertas, não faz sentido pedir login.
+        window.location.replace(appUrl("dashboard", idFromUrl()));
       }
     });
   }
 
   /* ---------- Páginas internas: dashboard, contas, configurações ---------- */
 
+  function showPreviewBanner() {
+    var main = document.getElementById("app-main");
+    if (!main || document.getElementById("preview-banner")) return;
+    var banner = document.createElement("p");
+    banner.id = "preview-banner";
+    banner.className = "preview-banner";
+    banner.setAttribute("role", "status");
+    banner.textContent = "Modo de visualização: as telas estão abertas sem login enquanto o banco de dados não é ligado.";
+    main.insertBefore(banner, main.firstChild);
+  }
+
   if (document.body.getAttribute("data-app") === "1") {
     var main = document.getElementById("app-main");
     var loading = document.getElementById("app-loading");
 
     api("/api/auth/me").then(function (result) {
-      if (!(result.status === 200 && result.data && result.data.ok)) {
+      var user;
+      if (result.status === 200 && result.data && result.data.ok) {
+        user = result.data.user;
+      } else if (result.status === 503 && result.data && result.data.error && result.data.error.code === "not_configured") {
+        // Modo de visualização: enquanto o banco de dados não está ligado, as telas
+        // abrem sem login. Assim que o banco existir, este trecho deixa de valer.
+        user = { id: idFromUrl() || "visualizacao", email: "sem login por enquanto", name: "Visitante" };
+        showPreviewBanner();
+      } else {
         // Sem sessão: vai para o login (mantendo o id da URL, se houver).
         window.location.replace(appUrl("login", idFromUrl()));
         return;
       }
-      var user = result.data.user;
       fixUrl(user.id); // garante /app/<página>/<id da própria conta>
 
       var shownName = user.name || user.email.split("@")[0];
@@ -301,7 +322,7 @@
       logout.addEventListener("click", function () {
         logout.disabled = true;
         api("/api/auth/logout", { method: "POST", body: {} }).then(function () {
-          window.location.replace(appUrl("login"));
+          window.location.replace(document.getElementById("preview-banner") ? "/" : appUrl("login"));
         });
       });
     }
