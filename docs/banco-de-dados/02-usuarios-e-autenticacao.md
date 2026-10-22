@@ -64,3 +64,6 @@ Mesma estrutura de `email_verifications`, com `expires_at` ainda mais curto e us
 - Único em `users.email`
 - `sessions.user_id`, `sessions.expires_at`
 - `email_verifications.token_hash`, `password_resets.token_hash`
+
+## Tentativas de login e cadastro (limite de abuso)
+Tabela `auth_attempts`: `id`, `kind` (login|register), `email_key` (e-mail normalizado, nulo no cadastro), `ip_hash` (HMAC, nunca o IP puro), `success` (bool), `created_at`. Índices em (`kind`, `email_key`, `ip_hash`, `created_at`). Apagar linhas com mais de 24 h.

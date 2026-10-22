@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;700;800;900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body data-page="painel">
+  <header class="site-header is-scrolled">
+    <div class="container nav">
+      <a class="logo" href="/painel" aria-label="Painel">
+        <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="9" fill="#fe9a00"/>
+          <path d="M9 22V10h7a4.5 4.5 0 0 1 0 9h-3.5" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="23" cy="22" r="2.2" fill="#000000"/>
+        </svg>
+        <span data-brand>Pinflow</span>
+      </a>
+      <button class="btn btn-ghost btn-small" type="button" id="logout">Sair</button>
+    </div>
+  </header>
+
+  <main class="dash" id="dash" hidden>
+    <div class="container">
+      <h1>Olá, <span data-user-name></span></h1>
+      <p class="section-intro">Você entrou com <strong data-user-email></strong>.</p>
+
+      <section class="dash-card" aria-labelledby="contas-titulo">
+        <h2 id="contas-titulo">Contas do Pinterest</h2>
+        <p>Nenhuma conta conectada ainda.</p>
+        <button class="btn btn-primary" type="button" disabled>Conectar conta do Pinterest</button>
+        <p class="hint">A conexão pelo login oficial do Pinterest é a próxima etapa da plataforma.</p>
+      </section>
+    </div>
+  </main>
+
+  <p class="dash-loading container" id="dash-loading" role="status">Carregando…</p>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/auth.js"></script>
+</body>
+</html>

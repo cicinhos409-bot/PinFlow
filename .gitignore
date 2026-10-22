@@ -17,3 +17,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Banco de teste local (nunca subir)
+.data/

@@ -821,6 +821,8 @@ p {
   font-size: 0.95rem;
 }
 .field input[type="email"],
+.field input[type="password"],
+.field input[type="text"],
 .field select {
   width: 100%;
   min-height: 50px;
@@ -1024,5 +1026,144 @@ p {
   .btn,
   .faq summary::after {
     transition: none;
+  }
+}
+
+/* ---------- Contas: cadastro, entrar e painel ---------- */
+
+[hidden] {
+  display: none !important;
+}
+
+.auth {
+  padding: 40px 0 96px;
+  background: radial-gradient(ellipse 80% 45% at 50% 0%, rgba(254, 154, 0, 0.16), transparent 70%);
+}
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  padding: 32px 22px;
+}
+.auth-card h1 {
+  font-size: clamp(2rem, 7vw, 2.6rem);
+  font-weight: 900;
+}
+.auth-card .section-intro {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+.auth-card .form {
+  margin-top: 26px;
+}
+.auth-alt {
+  margin-top: 22px;
+  text-align: center;
+  color: var(--text-soft);
+}
+.auth-alt a {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.optional {
+  color: var(--text-soft);
+  font-weight: 400;
+}
+
+.pw {
+  position: relative;
+}
+.field .pw input {
+  padding-right: 96px;
+}
+.pw-toggle {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  min-height: 40px;
+  padding: 0 12px;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--amber);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pw-toggle:hover {
+  background: var(--surface-2);
+}
+
+.meter {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.meter i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--amber);
+  transition: width 0.2s ease;
+}
+.hint {
+  font-size: 0.88rem;
+  color: var(--text-soft);
+}
+.hint strong {
+  color: var(--text);
+}
+
+.field.has-error input {
+  border-color: var(--danger);
+}
+
+.dash {
+  padding: 48px 0 96px;
+}
+.dash h1 {
+  font-size: clamp(2.2rem, 7vw, 3.2rem);
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+.dash .section-intro strong {
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.dash-card {
+  margin-top: 36px;
+  max-width: 560px;
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 26px 22px;
+}
+.dash-card h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.dash-card p {
+  color: var(--text-soft);
+}
+.dash-card .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.dash-loading {
+  padding: 48px var(--gutter);
+  color: var(--text-soft);
+}
+
+@media (min-width: 720px) {
+  .auth-card {
+    padding: 40px 36px;
   }
 }

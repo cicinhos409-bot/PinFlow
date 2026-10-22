@@ -5,6 +5,8 @@
   "description": "Plataforma SaaS para agendar pins em várias contas do Pinterest (landing page inicial)",
   "scripts": {
     "dev": "vercel dev",
-    "check": "node --check js/config.js && node --check js/main.js"
+    "dev:local": "node scripts/dev-server.js",
+    "test:auth": "node scripts/test-auth.js",
+    "check": "node --check js/config.js && node --check js/main.js && node --check js/auth.js && node --check scripts/dev-server.js && node --check scripts/test-auth.js"
   }
 }
